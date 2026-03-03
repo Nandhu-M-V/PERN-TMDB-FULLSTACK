@@ -1,0 +1,76 @@
+.loader {
+  width: 40px;
+  position: absolute;
+  z-index: 20;
+  border-radius: 10%;
+  aspect-ratio: 0.75;
+  --c: no-repeat linear-gradient(#7729d7 0 0);
+  background:
+    var(--c) 0% 50%,
+    var(--c) 50% 50%,
+    var(--c) 100% 50%;
+  animation: l7 1s infinite linear alternate;
+}
+@keyframes l7 {
+  0% {
+    background-size:
+      20% 50%,
+      20% 50%,
+      20% 50%;
+  }
+  20% {
+    background-size:
+      20% 20%,
+      20% 50%,
+      20% 50%;
+  }
+  40% {
+    background-size:
+      20% 100%,
+      20% 20%,
+      20% 50%;
+  }
+  60% {
+    background-size:
+      20% 50%,
+      20% 100%,
+      20% 20%;
+  }
+  80% {
+    background-size:
+      20% 50%,
+      20% 50%,
+      20% 100%;
+  }
+  100% {
+    background-size:
+      20% 50%,
+      20% 50%,
+      20% 50%;
+  }
+}
+
+.custom-button {
+  position: relative;
+  bottom: 60px;
+  left: 56.2rem;
+  font-weight: 500;
+
+  background-color: #6d28d9;
+  border-radius: 30px;
+
+  padding: 0.875rem 2.25rem;
+
+  box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.55);
+
+  transition: all 0.1s ease;
+}
+
+.custom-button:active {
+  transform: translateY(4px);
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.35);
+}
+
+.t-shadow {
+  text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+}

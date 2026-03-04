@@ -2,5 +2,11 @@
   "name": "pern-tmdb-fullstack",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "scripts": {
+    "dev": "concurrently \"yarn --cwd server dev\" \"yarn --cwd client dev\""
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
 }

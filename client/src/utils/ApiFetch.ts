@@ -85,7 +85,7 @@ export const fetchMovieGenres = async (): Promise<Genre[]> => {
 };
 
 export const getDiscoverMovies = async (page: number): Promise<Movie[]> => {
-  const res = await tmdbApi.get('/trending/movie/week', {
+  const res = await axios.get('http://localhost:5000/api/movies', {
     params: {
       include_video: false,
       language: i18n.language,

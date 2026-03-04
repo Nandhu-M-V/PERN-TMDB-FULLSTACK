@@ -1,4 +1,5 @@
 import * as React from 'react';
+import defimg from '../assets/images/gachi.jpg';
 import './styles/styles.css';
 import {
   Carousel,
@@ -36,7 +37,7 @@ export default function Carousal({ movies }: CarousalProps) {
                 src={
                   movie.backdrop_path
                     ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
-                    : ''
+                    : defimg
                 }
                 className="w-full h-full object-cover"
                 alt={movie.title || movie.name}

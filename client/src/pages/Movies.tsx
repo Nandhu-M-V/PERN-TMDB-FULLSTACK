@@ -24,10 +24,6 @@ const Movies = () => {
     }
   }, [status, dispatch, page, i18n.language]);
 
-  useEffect(() => {
-    console.log(page);
-  }, [page]);
-
   function newPage(newpage: number) {
     setpage(newpage);
     dispatch(fetchMovies(newpage));

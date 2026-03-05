@@ -16,6 +16,19 @@ const EditTvShow = () => {
   const [vote_average, setVote] = useState(0);
   const [first_air_date, setFirstAirDate] = useState('');
 
+  const slugify = (displayTitle: string): string => {
+    if (!displayTitle) return 'untitled';
+
+    return displayTitle
+      .toLowerCase()
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^\p{L}\p{N}\s-]/gu, '')
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+  };
+
   useEffect(() => {
     if (!showId) return;
 
@@ -69,7 +82,7 @@ const EditTvShow = () => {
     parsed[showId] = updatedShow;
     localStorage.setItem('editedTvShows', JSON.stringify(parsed));
 
-    navigate(`/tv/${showId}`);
+    navigate(`/tv/${showId}/${slugify(name)}`);
   };
 
   if (!tv)

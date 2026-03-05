@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
-import moviesRoutes from "./routes/movies.js";
+import mainRoutes from "./routes/media.js";
+import authRoutes from "./routes/auth.routes.js";
 
 const app = express();
 
@@ -11,7 +12,9 @@ app.get("/", (req, res) => {
   res.json({ message: "PERN TMDB API Running 🚀" });
 });
 
-app.use("/api/movies", moviesRoutes);
+app.use("/api", mainRoutes);
+
+app.use("/auth", authRoutes);
 
 app.get("/favicon.ico", (req, res) => res.status(204).end());
 

@@ -1,5 +1,6 @@
 export interface BaseMedia {
   id: number;
+  tmdb_id?: number;
   title?: string;
   name?: string;
   poster_path: string | null;
@@ -35,7 +36,7 @@ const TvShowCard = ({ movie }: { movie: BaseMedia }) => {
 
   return (
     <div
-      onClick={() => navigate(`/tv/${movie.id}/${slugify(displayTitle)}`)}
+      onClick={() => navigate(`/tv/${movie.tmdb_id}/${slugify(displayTitle)}`)}
       className="group relative w-62 h-95 snap-start
                  rounded-2xl overflow-hidden
                  cursor-pointer

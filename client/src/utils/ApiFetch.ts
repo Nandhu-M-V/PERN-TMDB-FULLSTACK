@@ -113,7 +113,7 @@ export const getFilterMovies = async (
 };
 
 export const getDiscoverTvShows = async (page: number): Promise<TvShow[]> => {
-  const res = await tmdbApi.get('/trending/tv/week', {
+  const res = await tmdbApi.get('http://localhost:5000/api/tvshows', {
     params: {
       include_video: false,
       language: i18n.language,
@@ -124,6 +124,18 @@ export const getDiscoverTvShows = async (page: number): Promise<TvShow[]> => {
 
   return res.data.results;
 };
+// export const getDiscoverTvShows = async (page: number): Promise<TvShow[]> => {
+//   const res = await tmdbApi.get('/trending/tv/week', {
+//     params: {
+//       include_video: false,
+//       language: i18n.language,
+//       page,
+//       sort_by: 'popularity.desc',
+//     },
+//   });
+
+//   return res.data.results;
+// };
 
 export const fetchShowid = async (id: string): Promise<TvDetailType> => {
   const res = await tmdbApi.get(`/tv/${id}`, {

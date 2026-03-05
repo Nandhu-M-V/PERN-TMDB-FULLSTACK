@@ -104,7 +104,7 @@ const MovieDetail = () => {
   if (loading) return <Loading />;
   if (!movie)
     return (
-      <div className="text-white text-4xl absolute z-10 p-10">
+      <div className="cursor-default text-white text-4xl absolute z-10 p-10">
         Movie not found!!
       </div>
     );
@@ -112,7 +112,7 @@ const MovieDetail = () => {
   const year = movie.release_date?.split('-')[0];
 
   return (
-    <div className="text-white pt-20 bg-purple-400/50 dark:bg-gray-950 min-h-screen">
+    <div className="cursor-default text-white pt-20 bg-purple-400/50 dark:bg-gray-950 min-h-screen">
       <div
         className="relative h-[70vh] bg-cover bg-top"
         style={{
@@ -133,10 +133,12 @@ const MovieDetail = () => {
         />
 
         <div className="max-w-3xl z-10">
-          <h1 className="text-4xl font-bold">{movie.title}</h1>
-          <p className="text-gray-400 italic mt-2">{movie.tagline}</p>
+          <h1 className="cursor-default text-4xl font-bold">{movie.title}</h1>
+          <p className="cursor-default text-gray-400 italic mt-2">
+            {movie.tagline}
+          </p>
 
-          <div className="flex gap-4 mt-4 text-sm text-gray-300">
+          <div className="flex gap-4 mt-4 cursor-default text-sm text-gray-300">
             <span>⭐ {movie.vote_average.toFixed(1)}</span>
             <span>{year}</span>
             <span>{movie.runtime} min</span>
@@ -146,14 +148,14 @@ const MovieDetail = () => {
             {movie.genres.map((genre) => (
               <span
                 key={genre.id}
-                className="bg-gray-800 px-3 py-1 rounded-full text-sm"
+                className="bg-gray-800 px-3 py-1 rounded-full cursor-default text-sm"
               >
                 {genre.name}
               </span>
             ))}
           </div>
 
-          <p className="mt-6 z-10 text-gray-300 leading-relaxed">
+          <p className="mt-6 z-10 cursor-default text-gray-300 leading-relaxed">
             {movie.overview}
           </p>
 
@@ -183,7 +185,7 @@ const MovieDetail = () => {
             className={`absolute bottom-0 left-2/3 z-10
                    bg-purple-600 hover:bg-purple-700
                    px-3 py-3 rounded-md
-                   text-sm font-semibold cursor-pointer
+                   cursor-pointer text-sm font-semibold
                    transition ${roles && roles.includes('Admin') ? '' : 'hidden'}`}
           >
             Edit Page
@@ -192,7 +194,7 @@ const MovieDetail = () => {
       </div>
       {/* similars --- */}
       <div className="px-6 md:px-16 mt-16 pb-20">
-        <h2 className=" text-purple-700 text-2xl font-bold mb-6">
+        <h2 className=" cursor-default text-purple-700  text-2xl font-bold mb-6">
           Similar Movies
         </h2>
 
@@ -212,7 +214,7 @@ const MovieDetail = () => {
                   className="rounded-lg cursor-pointer shadow-lg hover:scale-105 transition"
                 />
               )}
-              <p className="mt-2 dark:text-white text-black text-sm">
+              <p className="mt-2 dark:cursor-default dark:text-white cursor-default text-black  text-sm">
                 {movie.title}
               </p>
             </div>

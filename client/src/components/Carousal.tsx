@@ -1,5 +1,5 @@
 import * as React from 'react';
-import defimg from '../assets/images/gachi.jpg';
+import defimg from '../assets/images/ComingSoon.jpg';
 import './styles/styles.css';
 import {
   Carousel,

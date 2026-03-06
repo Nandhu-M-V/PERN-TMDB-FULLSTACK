@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import defaultImage from '../assets/images/ComingSoon.jpg';
 
 export interface Movie {
   id: number;
@@ -50,7 +51,11 @@ const HomeCards = ({
     >
       <img
         className="w-full h-full object-cover"
-        src={movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : ''}
+        src={
+          movie.poster_path
+            ? `${IMAGE_BASE_URL}${movie.poster_path}`
+            : defaultImage
+        }
         alt={displayTitle}
       />
 
@@ -62,7 +67,11 @@ const HomeCards = ({
       >
         <h3 className=" font-bold text-lg">{displayTitle}</h3>
 
-        {displayDate && <p className="text-sm text-gray-300">{displayDate}</p>}
+        {displayDate && (
+          <p className="text-sm text-gray-300">
+            {displayDate.toString().split('T')[0]}
+          </p>
+        )}
 
         {movie.vote_average && (
           <p className="text-sm text-yellow-400">

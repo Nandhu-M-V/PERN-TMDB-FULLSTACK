@@ -1,3 +1,5 @@
+import defaultImage from '../assets/images/ComingSoon.jpg';
+
 const IMAGE_BANNER_URL = 'https://image.tmdb.org/t/p/original';
 
 const HomeBanner = ({ backdrop }: { backdrop: string }) => {
@@ -5,7 +7,7 @@ const HomeBanner = ({ backdrop }: { backdrop: string }) => {
     <>
       <div className="relative scale-110 -left-10 z-0 w-full h-185 overflow-hidden">
         <img
-          src={`${IMAGE_BANNER_URL}${backdrop}`}
+          src={backdrop ? `${IMAGE_BANNER_URL}${backdrop}` : defaultImage}
           className="w-full h-full  object-cover object-[center_10%] rounded-md "
           alt="movie backdrop"
         />

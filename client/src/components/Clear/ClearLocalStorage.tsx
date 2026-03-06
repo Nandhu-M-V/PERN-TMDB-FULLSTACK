@@ -10,7 +10,15 @@ const ClearLocalStorageButton = () => {
     navigate('/');
   };
 
-  return <button onClick={handleClear}>Clear Data</button>;
+  return (
+    <button
+      disabled={true}
+      className="disabled:cursor-not-allowed"
+      onClick={handleClear}
+    >
+      Clear Data
+    </button>
+  );
 };
 
 export default ClearLocalStorageButton;

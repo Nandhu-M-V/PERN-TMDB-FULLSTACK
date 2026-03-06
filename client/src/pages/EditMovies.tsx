@@ -19,23 +19,25 @@ const EditMovie = () => {
   useEffect(() => {
     if (!movieId) return;
 
-    const stored = localStorage.getItem('editedMovies');
-    const parsed = stored ? JSON.parse(stored) : {};
+    const fetchMovie = async () => {
+      try {
+        const res = await fetch(`http://localhost:5000/api/movie/${movieId}`);
+        if (!res.ok) throw new Error('Movie not found');
 
-    if (parsed[movieId]) {
-      const m = parsed[movieId];
-      setTimeout(() => {
-        setMovie(m);
-        setTitle(m.title);
-        setOverview(m.overview);
-        setTagline(m.tagline);
-        setVote(m.vote_average);
-        setReleaseDate(m.release_date);
-      }, 0);
-    } else {
-      alert('Movie not found in local storage!');
-      navigate('/movies/discover');
-    }
+        const data: MovieDetailType = await res.json();
+        setMovie(data);
+        setTitle(data.title);
+        setOverview(data.overview);
+        setTagline(data.tagline ?? '');
+        setVote(data.vote_average);
+        setReleaseDate(data.release_date.split('T')[0]);
+      } catch (err) {
+        alert(`Movie not found! ${err instanceof Error ? err.message : ''}`);
+        navigate('/movies/discover');
+      }
+    };
+
+    fetchMovie();
   }, [movieId, navigate]);
 
   const validate = () => {
@@ -64,11 +66,10 @@ const EditMovie = () => {
       .replace(/-+/g, '-');
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!movie || !validate()) return;
 
     const updatedMovie = {
-      ...movie,
       title,
       overview,
       tagline,
@@ -76,13 +77,29 @@ const EditMovie = () => {
       release_date,
     };
 
-    const stored = localStorage.getItem('editedMovies');
-    const parsed = stored ? JSON.parse(stored) : {};
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/movie/${movieId}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedMovie),
+        }
+      );
 
-    parsed[movieId] = updatedMovie;
-    localStorage.setItem('editedMovies', JSON.stringify(parsed));
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        alert(errData.error || 'Failed to update movie');
+        return;
+      }
 
-    navigate(`/movie/${movieId}/${slugify(movie.title)}`);
+      // safely parse JSON
+      const data = await response.json().catch(() => updatedMovie);
+      navigate(`/movie/${movieId}/${slugify(data.title)}`);
+    } catch (err) {
+      console.error(err);
+      alert('Something went wrong while updating the movie.');
+    }
   };
 
   if (!movie)
@@ -147,7 +164,7 @@ const EditMovie = () => {
           <input
             id="releaseDate"
             type="date"
-            value={release_date}
+            value={release_date || '2000-01-01'}
             onChange={(e) => setReleaseDate(e.target.value)}
             className="p-3 w-full rounded border border-black dark:border-purple-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
           />

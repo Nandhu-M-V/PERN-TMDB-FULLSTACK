@@ -3,7 +3,7 @@ import { fetchTvShows } from '@/features/Tvshows/tvshowSlice';
 import type { AppDispatch, RootState } from '../app/store';
 import HomeBanner from '@/components/HomeBanner';
 import Loading from '@/components/Loading';
-import { useAuth0 } from '@auth0/auth0-react';
+// import { useAuth0 } from '@auth0/auth0-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import HomeCards from '@/components/Homecards';
@@ -26,16 +26,16 @@ const Home = () => {
     (state: RootState) => state.tvshow
   );
 
-  const { user } = useAuth0();
-  const roles = user?.['http://localhost:5002/roles'];
+  //   const { user } = useAuth0();
+  const roles = ['Admin']; // Replace with actual role fetching logic
 
-  useEffect(() => {
-    if (user) {
-      console.log('USER OBJECT:', user);
-    }
-  }, [user]);
+  //   useEffect(() => {
+  //     if (user) {
+  //       console.log('USER OBJECT:', user);
+  //     }
+  //   }, [user]);
 
-  const name = user?.name || t('guest');
+  const name = t('guest');
 
   useEffect(() => {
     if (status === 'idle' || tvstatus === 'idle') {

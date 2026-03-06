@@ -1,12 +1,12 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaSearch, FaBars, FaTimes } from 'react-icons/fa';
-import { useAuth0 } from '@auth0/auth0-react';
+// import { useAuth0 } from '@auth0/auth0-react';
 import { useTranslation } from 'react-i18next';
 import Search from './Search';
 import './styles/styles.css';
 
-import LoginButton from './login-signup/LoginButton';
-import LogoutButton from './login-signup/LogoutButton';
+// import LoginButton from './login-signup/LoginButton';
+// import LogoutButton from './login-signup/LogoutButton';
 
 import { useEffect, useRef, useState } from 'react';
 import ThemeToggle from './DarkMode';
@@ -17,7 +17,7 @@ const Header = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated, isLoading, error } = useAuth0();
+  //   const { isAuthenticated, isLoading, error } = useAuth0();
 
   const [open, setOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -131,18 +131,18 @@ const Header = () => {
               </div>
 
               {open && (
-                <div className="absolute left-0 mt-2 w-40 bg-purple-700 shadow-lg rounded-xl z-50">
+                <div className="absolute left-0 mt-2 w-40 bg-purple-700 p-0.5 border-b border-purple-950 shadow-lg rounded-2xl z-50">
                   <button
                     onClick={() => {
                       navigate('/filter');
                       setOpen(false);
                     }}
-                    className="w-full cursor-pointer text-left px-4 py-2 hover:bg-purple-200 hover:text-purple-700 transition"
+                    className="w-full cursor-pointer text-left px-4 py-2 rounded-2xl bg-purple-600 border-b border-purple-950 hover:bg-purple-200 hover:text-purple-700 transition"
                   >
                     {t('filter')}
                   </button>
 
-                  <div className="px-4 py-2 cursor-pointer hover:bg-purple-200 hover:text-purple-700 transition">
+                  <div className="px-4 py-2 cursor-not-allowed hover:bg-purple-200 bg-purple-600 border-t border-purple-950 rounded-2xl hover:text-purple-700 transition">
                     <ClearLocalStorageButton />
                   </div>
                 </div>
@@ -160,7 +160,7 @@ const Header = () => {
           >
             <ul className="flex flex-col text-lg font-semibold">
               <li
-                className="p-4 cursor-pointer border-b border-purple-600 hover:bg-purple-800"
+                className="p-4 cursor-pointer rounded-2xl border-b border-purple-600 hover:bg-purple-800"
                 onClick={() => {
                   navigate('/movies/discover');
                   setMobileOpen(false);
@@ -170,7 +170,7 @@ const Header = () => {
               </li>
 
               <li
-                className="p-4 cursor-pointer border-b border-purple-600 hover:bg-purple-800"
+                className="p-4 cursor-pointer rounded-2xl border-b border-purple-600 hover:bg-purple-800"
                 onClick={() => {
                   navigate('/tvshow/discover');
                   setMobileOpen(false);
@@ -180,7 +180,7 @@ const Header = () => {
               </li>
 
               <li
-                className="p-4 cursor-pointer border-b border-purple-600 hover:bg-purple-800"
+                className="p-4 cursor-pointer rounded-2xl border-b border-purple-600 hover:bg-purple-800"
                 onClick={() => {
                   navigate('/filter');
                   setMobileOpen(false);
@@ -190,7 +190,7 @@ const Header = () => {
               </li>
 
               <div
-                className="p-4  hover:bg-purple-800"
+                className="p-4 rounded-2xl hover:bg-purple-800"
                 onClick={() => setMobileOpen(false)}
               >
                 <ClearLocalStorageButton />
@@ -213,7 +213,7 @@ const Header = () => {
 
           <LanguageSwitcher />
 
-          {error && <div className="text-red-700">{t('authError')}</div>}
+          {/* {error && <div className="text-red-700">{t('authError')}</div>}
 
           {isLoading ? (
             <span className="loader"></span>
@@ -221,7 +221,7 @@ const Header = () => {
             <div className="rounded-md shadow-black hover:bg-purple-800 text-gray-300 hover:text-white font-bold bg-purple-700 px-3 py-2">
               {isAuthenticated ? <LogoutButton /> : <LoginButton />}
             </div>
-          )}
+          )} */}
 
           <ThemeToggle />
         </div>

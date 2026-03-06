@@ -1,5 +1,6 @@
 import type { BaseMedia } from './TvShowCard';
 import { useNavigate } from 'react-router-dom';
+import defaultImage from '../assets/images/ComingSoon.jpg';
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
@@ -22,9 +23,7 @@ const MovieCard = ({ movie }: { movie: BaseMedia }) => {
 
   return (
     <div
-      onClick={() =>
-        navigate(`/movie/${movie.tmdb_id}/${slugify(displayTitle)}`)
-      }
+      onClick={() => navigate(`/movie/${movie.id}/${slugify(displayTitle)}`)}
       className="group relative w-62 h-95 snap-start
                  rounded-2xl overflow-hidden
                  transform transition-all duration-500
@@ -33,7 +32,11 @@ const MovieCard = ({ movie }: { movie: BaseMedia }) => {
     >
       <img
         className="w-full h-full object-cover"
-        src={movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : ''}
+        src={
+          movie.poster_path
+            ? `${IMAGE_BASE_URL}${movie.poster_path}`
+            : defaultImage
+        }
         alt={displayTitle}
       />
 
@@ -46,7 +49,9 @@ const MovieCard = ({ movie }: { movie: BaseMedia }) => {
         <h3 className="font-bold text-lg">{displayTitle}</h3>
 
         {movie.release_date && (
-          <p className="text-sm text-gray-300">{movie.release_date}</p>
+          <p className="text-sm text-gray-300">
+            {movie.release_date.toString().split('T')[0]}
+          </p>
         )}
 
         {movie.vote_average !== undefined && (

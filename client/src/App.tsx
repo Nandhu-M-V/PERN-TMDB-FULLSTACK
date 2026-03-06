@@ -9,6 +9,9 @@ import EditMovie from './pages/EditMovies';
 import EditTvShow from './pages/EditTvShows';
 import FilterResultsPage from './pages/Filter';
 import NotFound from './pages/NotFound';
+import Login from './pages/LoginPage';
+import ProtectedRoute from './components/ProtectedRoute';
+import Profile from './pages/Profile';
 
 const App = () => {
   return (
@@ -22,6 +25,15 @@ const App = () => {
           <Route path="tvshow/edit/:id" element={<EditTvShow />} />
           <Route path="/movie/:id/:title" element={<MovieDetail />} />
           <Route path="tv/:id/:name" element={<TvDetail />} />
+          <Route path="login" element={<Login />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
           <Route path="filter" element={<FilterResultsPage />} />
           <Route path="*" element={<NotFound />} />
         </Route>

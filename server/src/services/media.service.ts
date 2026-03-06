@@ -26,6 +26,8 @@ export const fetchPopularMedia = async (type: MediaType) => {
 
       const items = response.data.results;
 
+      // console.log(items);
+
       for (const item of items) {
         await pool.query(
           `

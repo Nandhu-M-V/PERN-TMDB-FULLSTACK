@@ -12,6 +12,8 @@ export interface BaseMedia {
   vote_average?: number;
 }
 
+import defaultImage from '../assets/images/ComingSoon.jpg';
+
 import { useNavigate } from 'react-router-dom';
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
@@ -36,7 +38,7 @@ const TvShowCard = ({ movie }: { movie: BaseMedia }) => {
 
   return (
     <div
-      onClick={() => navigate(`/tv/${movie.tmdb_id}/${slugify(displayTitle)}`)}
+      onClick={() => navigate(`/tv/${movie.id}/${slugify(displayTitle)}`)}
       className="group relative w-62 h-95 snap-start
                  rounded-2xl overflow-hidden
                  cursor-pointer
@@ -46,7 +48,11 @@ const TvShowCard = ({ movie }: { movie: BaseMedia }) => {
     >
       <img
         className="w-full h-full object-cover"
-        src={movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : ''}
+        src={
+          movie.poster_path
+            ? `${IMAGE_BASE_URL}${movie.poster_path}`
+            : defaultImage
+        }
         alt={displayTitle}
       />
 
@@ -58,7 +64,11 @@ const TvShowCard = ({ movie }: { movie: BaseMedia }) => {
       >
         <h3 className="font-bold text-lg">{displayTitle}</h3>
 
-        {displayDate && <p className="text-sm text-gray-300">{displayDate}</p>}
+        {displayDate && (
+          <p className="text-sm text-gray-300">
+            {displayDate.toString().split('T')[0]}
+          </p>
+        )}
 
         {movie.vote_average && (
           <p className="text-sm text-yellow-400">

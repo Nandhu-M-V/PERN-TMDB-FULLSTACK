@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Loading from '@/components/Loading';
 import { fetchShowid } from '@/utils/ApiFetch';
-import { useAuth0 } from '@auth0/auth0-react';
+// import { useAuth0 } from '@auth0/auth0-react';
 
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 
 export interface Genre {
   id: number;
@@ -33,20 +34,20 @@ export interface Season {
 
 export interface TvDetailType {
   id: number;
-  name: string;
+  title: string;
   overview: string;
   backdrop_path: string;
   poster_path: string;
-  first_air_date: string;
+  first_air_date?: string;
   vote_average: number;
-  tagline: string;
-  number_of_seasons: number;
-  number_of_episodes: number;
-  episode_run_time: number[];
-  genres: Genre[];
-  created_by: Creator[];
-  networks: Network[];
-  seasons: Season[];
+  tagline?: string;
+  number_of_seasons?: number;
+  number_of_episodes?: number;
+  episode_run_time?: number[];
+  genres?: Genre[];
+  created_by?: Creator[];
+  networks?: Network[];
+  seasons?: Season[];
 }
 
 const TvDetail = () => {
@@ -55,10 +56,23 @@ const TvDetail = () => {
   const showId = id;
 
   const [show, setShow] = useState<TvDetailType | null>(null);
+  const [similar, setSimilar] = useState<TvDetailType[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const { user } = useAuth0();
-  const roles = user?.['http://localhost:5002/roles'];
+  useEffect(() => {
+    const getRelated = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/tvshows`);
+        setSimilar(res.data.results);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getRelated();
+  }, [showId]);
+
+  //   const { user } = useAuth0();
+  const roles = ['Admin']; // Replace with actual role fetching logic
 
   const { i18n } = useTranslation();
 
@@ -114,26 +128,26 @@ const TvDetail = () => {
         <div className="absolute top-40 z-0 inset-0 bg-linear-to-b from-white/20 via-white/10 to-transparent h-full" />
         <img
           src={`https://image.tmdb.org/t/p/w500${show.poster_path}`}
-          alt={show.name}
+          alt={show.title}
           className="w-64 max-h-100 z-10 rounded-xl shadow-2xl"
         />
 
         <div className="max-w-3xl relative">
-          <h1 className="text-4xl font-bold">{show.name}</h1>
+          <h1 className="text-4xl font-bold">{show.title}</h1>
           <p className="text-gray-400 italic mt-2">{show.tagline}</p>
 
           <div className="flex flex-wrap gap-4 mt-4 text-sm z-10 text-gray-300">
             <span>⭐ {show.vote_average.toFixed(1)}</span>
             <span>{year}</span>
-            <span>{show.number_of_seasons} Seasons</span>
-            <span>{show.number_of_episodes} Episodes</span>
+            {/* <span>{show.number_of_seasons} Seasons</span> */}
+            {/* <span>{show.number_of_episodes} Episodes</span> */}
             {show.episode_run_time?.[0] && (
               <span>{show.episode_run_time[0]} min</span>
             )}
           </div>
 
           <div className="flex gap-3 mt-4 flex-wrap">
-            {show.genres.map((genre) => (
+            {show.genres?.map((genre) => (
               <span
                 key={genre.id}
                 className="bg-gray-800 px-3 py-1 rounded-full text-sm"
@@ -160,9 +174,9 @@ const TvDetail = () => {
           </button>
 
           <div className="mt-6">
-            <h3 className="text-lg font-semibold mb-2">Created By</h3>
+            {/* <h3 className="text-lg font-semibold mb-2">Created By</h3> */}
             <div className="flex gap-6 flex-wrap">
-              {show.created_by.map((creator) => (
+              {show.created_by?.map((creator) => (
                 <div key={creator.id} className="text-sm">
                   <p>{creator.name}</p>
                 </div>
@@ -172,7 +186,7 @@ const TvDetail = () => {
 
           <div className="flex gap-6 mt-6 z-10 items-center flex-wrap">
             {show.networks
-              .slice(0, 7)
+              ?.slice(0, 7)
               .map(
                 (network) =>
                   network.logo_path && (
@@ -189,28 +203,25 @@ const TvDetail = () => {
       </div>
 
       <div className="px-6 md:px-16 mt-16 pb-20">
-        <h2 className="text-2xl text-purple-700 font-bold mb-6">Seasons</h2>
+        <h2 className="text-2xl text-purple-700 font-bold mb-6">
+          Similar Tvshows
+        </h2>
 
         <div className="flex gap-6 custom-scrollbar overflow-x-auto pb-4">
-          {show.seasons
-            .filter((season) => season.season_number !== 0)
-            .map((season) => (
-              <div key={season.id} className="min-w-45">
-                {season.poster_path && (
-                  <img
-                    src={`https://image.tmdb.org/t/p/w300${season.poster_path}`}
-                    alt={season.name}
-                    className="rounded-lg shadow-lg"
-                  />
-                )}
-                <p className="mt-2 dark:text-white text-black text-sm">
-                  {season.name}
-                </p>
-                <p className="text-gray-400 text-xs">
-                  {season.episode_count} Episodes
-                </p>
-              </div>
-            ))}
+          {similar.map((season) => (
+            <div key={season.id} className="min-w-45">
+              {season.poster_path && (
+                <img
+                  src={`https://image.tmdb.org/t/p/w300${season.poster_path}`}
+                  alt={season.title}
+                  className="rounded-lg shadow-lg"
+                />
+              )}
+              <p className="mt-2 dark:text-white text-black text-sm">
+                {season.title}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </div>

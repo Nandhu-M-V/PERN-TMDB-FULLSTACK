@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Loading from '@/components/Loading';
 import type { SimilarMovie } from '@/utils/ApiFetch';
-import { useAuth0 } from '@auth0/auth0-react';
+// import { useAuth0 } from '@auth0/auth0-react';
+
+import defautImage from '../assets/images/ComingSoon.jpg';
+import defaultPoster from '../assets/images/defaultposter.jpg';
 
 import { fetchMovieid, fetchSimilarMovies } from '@/utils/ApiFetch';
 import { useTranslation } from 'react-i18next';
@@ -25,11 +28,11 @@ export interface MovieDetailType {
   backdrop_path: string;
   poster_path: string;
   release_date: string;
-  runtime: number;
+  runtime?: number;
   vote_average: number;
-  tagline: string;
-  genres: Genre[];
-  production_companies: ProductionCompany[];
+  tagline?: string;
+  genres?: Genre[];
+  production_companies?: ProductionCompany[];
 }
 
 const MovieDetail = () => {
@@ -43,8 +46,8 @@ const MovieDetail = () => {
 
   const { i18n } = useTranslation();
 
-  const { user } = useAuth0();
-  const roles = user?.['http://localhost:5002/roles'];
+  //   const { user } = useAuth0();
+  const roles = ['Admin']; // Replace with actual role fetching logic
 
   //adding to url
   const slugify = (displayTitle: string): string => {
@@ -68,23 +71,8 @@ const MovieDetail = () => {
         setLoading(true);
 
         const data = await fetchMovieid(id);
-        const similarData = await fetchSimilarMovies(id);
-
-        const stored = localStorage.getItem('editedMovies');
-        const parsed = stored ? JSON.parse(stored) : {};
-
-        if (parsed[id]) {
-          setMovie({
-            ...data,
-            ...parsed[id],
-          });
-        } else {
-          setMovie(data);
-
-          parsed[id] = data;
-          localStorage.setItem('editedMovies', JSON.stringify(parsed));
-        }
-
+        const similarData = await fetchSimilarMovies();
+        setMovie(data);
         setSimilar(similarData);
       } catch (error) {
         console.error(error);
@@ -96,10 +84,6 @@ const MovieDetail = () => {
 
     getShow();
   }, [id, i18n.language]);
-
-  //   useEffect(() => {
-  //     console.log(movie);
-  //   }, [movie]);
 
   if (loading) return <Loading />;
   if (!movie)
@@ -115,9 +99,13 @@ const MovieDetail = () => {
     <div className="cursor-default text-white pt-20 bg-purple-400/50 dark:bg-gray-950 min-h-screen">
       <div
         className="relative h-[70vh] bg-cover bg-top"
-        style={{
-          backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
-        }}
+        style={
+          movie.backdrop_path
+            ? {
+                backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
+              }
+            : { backgroundImage: `url(${defautImage})` }
+        }
       >
         <div className="absolute inset-0 dark:bg-linear-to-t from-black via-black/30 to-transparent" />
       </div>
@@ -127,9 +115,13 @@ const MovieDetail = () => {
         <div className="absolute top-40 z-0 inset-0 bg-linear-to-b from-white/20 via-white/10 to-transparent h-full" />
 
         <img
-          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+          src={
+            movie.poster_path
+              ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+              : defaultPoster
+          }
           alt={movie.title}
-          className="w-64 rounded-xl z-10 shadow-2xl"
+          className="w-64 rounded-xl h-96 z-10 shadow-2xl"
         />
 
         <div className="max-w-3xl z-10">
@@ -145,7 +137,7 @@ const MovieDetail = () => {
           </div>
 
           <div className="flex z-10 gap-3 mt-4 flex-wrap">
-            {movie.genres.map((genre) => (
+            {movie.genres?.map((genre) => (
               <span
                 key={genre.id}
                 className="bg-gray-800 px-3 py-1 rounded-full cursor-default text-sm"
@@ -160,7 +152,7 @@ const MovieDetail = () => {
           </p>
 
           <div className="flex z-10 gap-6 mt-8 items-center flex-wrap">
-            {movie.production_companies.map(
+            {movie.production_companies?.map(
               (company) =>
                 company.logo_path && (
                   <img
@@ -207,13 +199,17 @@ const MovieDetail = () => {
                 navigate(`/movie/${movie.id}/${slugify(movie.title)}`)
               }
             >
-              {movie.poster_path && (
+              {
                 <img
-                  src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+                  src={
+                    movie.poster_path
+                      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                      : defaultPoster
+                  }
                   alt={movie.title}
-                  className="rounded-lg cursor-pointer shadow-lg hover:scale-105 transition"
+                  className="rounded-lg cursor-pointer h-50 shadow-lg hover:scale-105 transition"
                 />
-              )}
+              }
               <p className="mt-2 dark:cursor-default dark:text-white cursor-default text-black  text-sm">
                 {movie.title}
               </p>

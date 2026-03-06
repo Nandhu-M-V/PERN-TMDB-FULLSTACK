@@ -138,26 +138,27 @@ export const getDiscoverTvShows = async (page: number): Promise<TvShow[]> => {
 // };
 
 export const fetchShowid = async (id: string): Promise<TvDetailType> => {
-  const res = await tmdbApi.get(`/tv/${id}`, {
-    params: { language: i18n.language },
+  const res = await axios.get(`http://localhost:5000/api/tvshow/${id}`, {
+    // params: { language: i18n.language },
   });
 
   return res.data;
 };
 
 export const fetchMovieid = async (id: string): Promise<MovieDetailType> => {
-  const res = await tmdbApi.get(`/movie/${id}`, {
-    params: { language: i18n.language },
+  const res = await axios.get(`http://localhost:5000/api/movie/${id}`, {
+    // params: { language: i18n.language },
   });
 
   return res.data;
 };
 
-export const fetchSimilarMovies = async (
-  id: string
-): Promise<SimilarMovie[]> => {
-  const res = await tmdbApi.get(`/movie/${id}/similar`, {
-    params: { language: i18n.language, page: 1 },
+export const fetchSimilarMovies = async (): Promise<SimilarMovie[]> => {
+  const res = await axios.get('http://localhost:5000/api/movies', {
+    params: {
+      include_video: false,
+      sort_by: 'popularity.desc',
+    },
   });
 
   return res.data.results;

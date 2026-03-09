@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import type { TvDetailType } from './TvDetail';
+import type { AppDispatch } from '../app/store';
+import { useDispatch } from 'react-redux';
+import { fetchTvShows } from '@/features/Tvshows/tvshowSlice';
 
 const EditTvShow = () => {
   const { id } = useParams<{ id: string }>();
@@ -10,11 +13,13 @@ const EditTvShow = () => {
   const [tv, setTv] = useState<TvDetailType | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const [name, setName] = useState('');
+  const [title, setTitle] = useState('');
   const [overview, setOverview] = useState('');
   const [tagline, setTagline] = useState('');
   const [vote_average, setVote] = useState(0);
-  const [first_air_date, setFirstAirDate] = useState('');
+  const [release_date, setReleaseDate] = useState('');
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const slugify = (displayTitle: string): string => {
     if (!displayTitle) return 'untitled';
@@ -32,32 +37,34 @@ const EditTvShow = () => {
   useEffect(() => {
     if (!showId) return;
 
-    const stored = localStorage.getItem('editedTvShows');
-    const parsed = stored ? JSON.parse(stored) : {};
+    const fetchShow = async () => {
+      try {
+        const res = await fetch(`http://localhost:5000/api/tvshow/${showId}`);
+        if (!res.ok) throw new Error('TV show not found');
 
-    if (parsed[showId]) {
-      const show = parsed[showId];
-      setTimeout(() => {
-        setTv(show);
-        setName(show.name);
-        setOverview(show.overview);
-        setTagline(show.tagline);
-        setVote(show.vote_average);
-        setFirstAirDate(show.first_air_date);
-      }, 0);
-    } else {
-      alert('TV Show not found in local storage!');
-      navigate('/tvshow/discover');
-    }
+        const data: TvDetailType = await res.json();
+
+        setTv(data);
+        setTitle(data.title);
+        setOverview(data.overview);
+        setTagline(data.tagline ?? '');
+        setVote(data.vote_average);
+        setReleaseDate(data.release_date?.split('T')[0]?.toString() ?? '');
+      } catch (err) {
+        alert(`TV Show not found ${err}`);
+        navigate('/tvshow/discover');
+      }
+    };
+
+    fetchShow();
   }, [showId, navigate]);
 
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
 
-    if (!name.trim()) newErrors.name = 'TV Show name is required';
     if (!overview.trim()) newErrors.overview = 'Overview is required';
-    if (!first_air_date)
-      newErrors.first_air_date = 'First air date is required';
+    if (!title.trim()) newErrors.title = 'TV Show title is required';
+    if (!release_date) newErrors.release_date = 'Release date is required';
     if (vote_average < 0 || vote_average > 10)
       newErrors.vote_average = 'Vote must be between 0 and 10';
 
@@ -65,24 +72,39 @@ const EditTvShow = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!tv || !validate()) return;
 
     const updatedShow = {
-      ...tv,
-      name,
+      title,
       overview,
       tagline,
       vote_average,
-      first_air_date,
+      release_date,
     };
 
-    const stored = localStorage.getItem('editedTvShows');
-    const parsed = stored ? JSON.parse(stored) : {};
-    parsed[showId] = updatedShow;
-    localStorage.setItem('editedTvShows', JSON.stringify(parsed));
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/tvshow/${showId}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedShow),
+        }
+      );
 
-    navigate(`/tv/${showId}/${slugify(name)}`);
+      if (!response.ok) {
+        alert('Failed to update TV show');
+        return;
+      }
+
+      const data = await response.json();
+      dispatch(fetchTvShows(1));
+      navigate(`/tv/${showId}/${slugify(data.title)}`);
+    } catch (err) {
+      console.error(err);
+      alert('Something went wrong updating the TV show.');
+    }
   };
 
   if (!tv)
@@ -109,15 +131,15 @@ const EditTvShow = () => {
             <input
               id="name"
               type="text"
-              value={name}
+              value={title}
               onChange={(e) => {
-                setName(e.target.value);
-                setErrors((prev) => ({ ...prev, name: '' }));
+                setTitle(e.target.value);
+                setErrors((prev) => ({ ...prev, title: '' }));
               }}
               className="p-3 w-full rounded border border-black dark:border-purple-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
-            {errors.name && (
-              <p className="text-red-500 text-sm">{errors.name}</p>
+            {errors.title && (
+              <p className="text-red-500 text-sm">{errors.title}</p>
             )}
           </div>
 
@@ -160,14 +182,14 @@ const EditTvShow = () => {
             <input
               id="firstAirDate"
               type="date"
-              value={first_air_date}
+              value={release_date}
               onChange={(e) => {
-                setFirstAirDate(e.target.value);
-                setErrors((prev) => ({ ...prev, first_air_date: '' }));
+                setReleaseDate(e.target.value);
+                setErrors((prev) => ({ ...prev, release_date: '' }));
               }}
               className="p-3 w-full rounded border border-black dark:border-purple-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
-            {errors.first_air_date && (
+            {errors.release_date && (
               <p className="text-red-500 text-sm">{errors.first_air_date}</p>
             )}
           </div>

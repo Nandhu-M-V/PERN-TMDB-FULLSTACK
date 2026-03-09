@@ -26,7 +26,7 @@ export interface Network {
 
 export interface Season {
   id: number;
-  name: string;
+  title: string;
   poster_path: string | null;
   season_number: number;
   episode_count: number;
@@ -38,7 +38,7 @@ export interface TvDetailType {
   overview: string;
   backdrop_path: string;
   poster_path: string;
-  first_air_date?: string;
+  release_date?: string;
   vote_average: number;
   tagline?: string;
   number_of_seasons?: number;
@@ -58,6 +58,19 @@ const TvDetail = () => {
   const [show, setShow] = useState<TvDetailType | null>(null);
   const [similar, setSimilar] = useState<TvDetailType[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const slugify = (displayTitle: string): string => {
+    if (!displayTitle) return 'untitled';
+
+    return displayTitle
+      .toLowerCase()
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^\p{L}\p{N}\s-]/gu, '')
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+  };
 
   useEffect(() => {
     const getRelated = async () => {
@@ -83,18 +96,8 @@ const TvDetail = () => {
       try {
         setLoading(true);
 
-        const stored = localStorage.getItem('editedTvShows');
-        const parsed = stored ? JSON.parse(stored) : {};
-
-        if (parsed[showId]) {
-          setShow(parsed[showId]);
-        } else {
-          const data = await fetchShowid(showId);
-          setShow(data);
-
-          parsed[showId] = data;
-          localStorage.setItem('editedTvShows', JSON.stringify(parsed));
-        }
+        const data = await fetchShowid(showId);
+        setShow(data);
       } catch (error) {
         console.error(error);
         setShow(null);
@@ -110,7 +113,7 @@ const TvDetail = () => {
   if (!show)
     return <div className="text-white p-10 text-3xl">Show not found</div>;
 
-  const year = show.first_air_date?.split('-')[0];
+  const year = show.release_date?.split('-')[0];
 
   return (
     <div className="text-white bg-purple-400/50 dark:bg-gray-950 pt-20 min-h-screen relative">
@@ -204,12 +207,18 @@ const TvDetail = () => {
 
       <div className="px-6 md:px-16 mt-16 pb-20">
         <h2 className="text-2xl text-purple-700 font-bold mb-6">
-          Similar Tvshows
+          Trending Tvshows
         </h2>
 
         <div className="flex gap-6 custom-scrollbar overflow-x-auto pb-4">
           {similar.map((season) => (
-            <div key={season.id} className="min-w-45">
+            <div
+              key={season.id}
+              className="min-w-45"
+              onClick={() =>
+                navigate(`/tv/${season.id}/${slugify(season.title)}`)
+              }
+            >
               {season.poster_path && (
                 <img
                   src={`https://image.tmdb.org/t/p/w300${season.poster_path}`}

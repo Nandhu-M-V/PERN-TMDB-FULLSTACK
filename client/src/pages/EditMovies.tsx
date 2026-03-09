@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import type { AppDispatch } from '../app/store';
 import type { MovieDetailType } from './MovieDetails';
+import { fetchMovies } from '@/features/movies/movieSlice';
+import { useDispatch } from 'react-redux';
 
 const EditMovie = () => {
   const { id } = useParams<{ id: string }>();
@@ -15,6 +18,8 @@ const EditMovie = () => {
   const [tagline, setTagline] = useState('');
   const [vote_average, setVote] = useState(0);
   const [release_date, setReleaseDate] = useState('');
+
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     if (!movieId) return;
@@ -93,8 +98,9 @@ const EditMovie = () => {
         return;
       }
 
-      // safely parse JSON
       const data = await response.json().catch(() => updatedMovie);
+      dispatch(fetchMovies(1));
+
       navigate(`/movie/${movieId}/${slugify(data.title)}`);
     } catch (err) {
       console.error(err);

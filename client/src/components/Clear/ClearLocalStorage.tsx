@@ -12,7 +12,7 @@ const ClearLocalStorageButton = () => {
 
   return (
     <button
-      disabled={true}
+      //   disabled={true}
       className="disabled:cursor-not-allowed"
       onClick={handleClear}
     >

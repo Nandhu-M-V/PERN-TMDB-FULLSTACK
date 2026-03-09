@@ -5,19 +5,23 @@ import { createMediaSchema } from "../validators/media.schema.js";
 import { getMovies } from "../controllers/getMovies.controller.js";
 import { getTvShows } from "../controllers/getTvShows.controller.js";
 import { getMediaById } from "../controllers/getMediaByID.controller.js";
-import { pool } from "../config/db.js";
 import { updateMovie } from "../controllers/updateMovie.controller.js";
 import { updateTvShow } from "../controllers/updateTvShows.controller.js";
+import { upload } from "../middleware/upload.js";
+import { createMedia } from "../controllers/createMedia.controller.js";
 
 const router = Router();
 
-// updating media
+// Sync media
 router.post("/sync/:type", syncMedia);
 
-// Zod Validate creation
-router.post("/", validate(createMediaSchema), async (req, res) => {
-  res.json({ message: "Movie validated", data: req.body });
-});
+// Create media (with poster upload)
+router.post(
+  "/",
+  upload.single("poster"),
+  validate(createMediaSchema),
+  createMedia,
+);
 
 // Fetch Movies
 router.get("/movies", getMovies);

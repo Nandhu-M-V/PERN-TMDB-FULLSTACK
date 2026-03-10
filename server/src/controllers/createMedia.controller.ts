@@ -13,16 +13,20 @@ export const createMedia = async (req: Request, res: Response) => {
   try {
     const { title, overview, release_date, runtime, language } = req.body;
 
+    const mediaType = req.params.type;
+
     const poster_path = req.file ? `/uploads/${req.file.filename}` : null;
+    console.log("BODY:", req.body);
+    console.log("FILE:", req.file);
 
     const result = await pool.query(
       `
-      INSERT INTO media 
-      (title, overview, poster_path, release_date, runtime, language)
-      VALUES ($1,$2,$3,$4,$5,$6)
+      INSERT INTO ${mediaType}
+      (title, overview, poster_path, release_date, runtime)
+      VALUES ($1,$2,$3,$4,$5)
       RETURNING *
       `,
-      [title, overview, poster_path, release_date, runtime, language],
+      [title, overview, poster_path, release_date, runtime],
     );
 
     res.status(201).json(result.rows[0]);

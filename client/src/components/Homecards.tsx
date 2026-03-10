@@ -3,6 +3,7 @@ import defaultImage from '../assets/images/ComingSoon.jpg';
 
 export interface Movie {
   id: number;
+  tmdb_id: number;
   title?: string;
   name?: string;
   poster_path: string | null;
@@ -15,6 +16,8 @@ export interface Movie {
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
+import defaultPoster from '../assets/images/defaultposter.jpg';
+
 const HomeCards = ({
   movie,
   mediaType,
@@ -24,6 +27,14 @@ const HomeCards = ({
 }) => {
   const displayTitle = movie.title || movie.name || 'Untitled';
   const displayDate = movie.release_date || movie.first_air_date;
+
+  const posterUrl = movie?.tmdb_id
+    ? movie.poster_path
+      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+      : defaultPoster
+    : movie?.poster_path
+      ? `http://localhost:5000${movie.poster_path}`
+      : defaultPoster;
 
   const slugify = (displayTitle: string): string => {
     if (!displayTitle) return 'untitled';
@@ -49,6 +60,11 @@ const HomeCards = ({
                  rounded-lg overflow-hidden transform transition-all duration-500 hover:scale-115 hover:-translate-y-1
                  hover:shadow-2xl hover:shadow-black/40"
     >
+      <img
+        src={posterUrl}
+        alt={movie.title}
+        className="w-64 rounded-xl h-68 z-10 shadow-2xl"
+      />
       <img
         className="w-full h-full object-cover"
         src={

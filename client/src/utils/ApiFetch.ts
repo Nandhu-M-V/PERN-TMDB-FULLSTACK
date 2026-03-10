@@ -74,6 +74,7 @@ export interface TvShow {
 }
 
 export interface SimilarMovie {
+  tmdb_id: number;
   id: number;
   title: string;
   poster_path: string;

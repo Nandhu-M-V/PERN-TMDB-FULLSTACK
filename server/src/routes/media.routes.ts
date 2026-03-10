@@ -17,9 +17,9 @@ router.post("/sync/:type", syncMedia);
 
 // Create media (with poster upload)
 router.post(
-  "/",
+  "/media/:type",
   upload.single("poster"),
-  validate(createMediaSchema),
+  // validate(createMediaSchema),
   createMedia,
 );
 

@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Loading from '@/components/Loading';
 import { fetchShowid } from '@/utils/ApiFetch';
 // import { useAuth0 } from '@auth0/auth0-react';
+// import defautImage from '../assets/images/ComingSoon.jpg';
+import defaultPoster from '../assets/images/defaultposter.jpg';
 
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
@@ -34,6 +36,7 @@ export interface Season {
 
 export interface TvDetailType {
   id: number;
+  tmdb_id: number;
   title: string;
   overview: string;
   backdrop_path: string;
@@ -109,6 +112,14 @@ const TvDetail = () => {
     getShow();
   }, [showId, i18n.language]);
 
+  const posterUrl = show?.tmdb_id
+    ? show.poster_path
+      ? `https://image.tmdb.org/t/p/w500${show.poster_path}`
+      : defaultPoster
+    : show?.poster_path
+      ? `http://localhost:5000${show.poster_path}`
+      : defaultPoster;
+
   if (loading) return <Loading />;
   if (!show)
     return <div className="text-white p-10 text-3xl">Show not found</div>;
@@ -130,9 +141,9 @@ const TvDetail = () => {
         <div className="absolute dark:hidden top-40 z-0 inset-0 bg-linear-to-b from-black/70 via-black/30 to-transparent h-full" />
         <div className="absolute top-40 z-0 inset-0 bg-linear-to-b from-white/20 via-white/10 to-transparent h-full" />
         <img
-          src={`https://image.tmdb.org/t/p/w500${show.poster_path}`}
+          src={posterUrl}
           alt={show.title}
-          className="w-64 max-h-100 z-10 rounded-xl shadow-2xl"
+          className="w-64 rounded-xl h-96 z-10 shadow-2xl"
         />
 
         <div className="max-w-3xl relative">
@@ -219,13 +230,19 @@ const TvDetail = () => {
                 navigate(`/tv/${season.id}/${slugify(season.title)}`)
               }
             >
-              {season.poster_path && (
-                <img
-                  src={`https://image.tmdb.org/t/p/w300${season.poster_path}`}
-                  alt={season.title}
-                  className="rounded-lg shadow-lg"
-                />
-              )}
+              <img
+                src={
+                  season.tmdb_id
+                    ? season.poster_path
+                      ? `https://image.tmdb.org/t/p/w500${season.poster_path}`
+                      : defaultPoster
+                    : season.poster_path
+                      ? `http://localhost:5000${season.poster_path}`
+                      : defaultPoster
+                }
+                alt={season.title}
+                className="w-64 rounded-xl h-60 z-10 shadow-2xl"
+              />
               <p className="mt-2 dark:text-white text-black text-sm">
                 {season.title}
               </p>

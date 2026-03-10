@@ -24,6 +24,7 @@ interface ProductionCompany {
 export interface MovieDetailType {
   id: number;
   title: string;
+  tmdb_id: number;
   overview: string;
   backdrop_path: string;
   poster_path: string;
@@ -45,6 +46,14 @@ const MovieDetail = () => {
   const navigate = useNavigate();
 
   const { i18n } = useTranslation();
+
+  const posterUrl = movie?.tmdb_id
+    ? movie.poster_path
+      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+      : defaultPoster
+    : movie?.poster_path
+      ? `http://localhost:5000${movie.poster_path}`
+      : defaultPoster;
 
   //   const { user } = useAuth0();
   const roles = ['Admin']; // Replace with actual role fetching logic
@@ -115,13 +124,9 @@ const MovieDetail = () => {
         <div className="absolute top-40 z-0 inset-0 bg-linear-to-b from-white/20 via-white/10 to-transparent h-full" />
 
         <img
-          src={
-            movie.poster_path
-              ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-              : defaultPoster
-          }
+          src={posterUrl}
           alt={movie.title}
-          className="w-64 rounded-xl h-96 z-10 shadow-2xl"
+          className="w-64 rounded-xl  z-10 shadow-2xl"
         />
 
         <div className="max-w-3xl z-10">
@@ -202,12 +207,16 @@ const MovieDetail = () => {
               {
                 <img
                   src={
-                    movie.poster_path
-                      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                      : defaultPoster
+                    movie.tmdb_id
+                      ? movie.poster_path
+                        ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                        : defaultPoster
+                      : movie.poster_path
+                        ? `http://localhost:5000${movie.poster_path}`
+                        : defaultPoster
                   }
                   alt={movie.title}
-                  className="rounded-lg cursor-pointer h-50 shadow-lg hover:scale-105 transition"
+                  className="w-64 rounded-xl h-60 z-10 shadow-2xl"
                 />
               }
               <p className="mt-2 dark:cursor-default dark:text-white cursor-default text-black  text-sm">

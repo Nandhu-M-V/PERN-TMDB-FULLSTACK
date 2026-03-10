@@ -12,15 +12,26 @@ export interface BaseMedia {
   vote_average?: number;
 }
 
-import defaultImage from '../assets/images/ComingSoon.jpg';
+// import defaultImage from '../assets/images/ComingSoon.jpg';
 
 import { useNavigate } from 'react-router-dom';
 
-const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+import defaultPoster from '../assets/images/defaultposter.jpg';
+
+// const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
 const TvShowCard = ({ movie }: { movie: BaseMedia }) => {
   const displayTitle = movie.title || movie.name || 'Untitled';
   const displayDate = movie.release_date || movie.first_air_date;
+
+  const posterUrl = movie?.tmdb_id
+    ? movie.poster_path
+      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+      : defaultPoster
+    : movie?.poster_path
+      ? `http://localhost:5000${movie.poster_path}`
+      : defaultPoster;
+
   const slugify = (displayTitle: string): string => {
     if (!displayTitle) return 'untitled';
 
@@ -47,13 +58,9 @@ const TvShowCard = ({ movie }: { movie: BaseMedia }) => {
                  hover:shadow-2xl hover:shadow-black/40"
     >
       <img
-        className="w-full h-full object-cover"
-        src={
-          movie.poster_path
-            ? `${IMAGE_BASE_URL}${movie.poster_path}`
-            : defaultImage
-        }
-        alt={displayTitle}
+        src={posterUrl}
+        alt={movie.title}
+        className="w-64 rounded-xl h-96 z-10 shadow-2xl"
       />
 
       <div

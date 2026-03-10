@@ -1,6 +1,7 @@
 import type { BaseMedia } from './TvShowCard';
 import { useNavigate } from 'react-router-dom';
 import defaultImage from '../assets/images/ComingSoon.jpg';
+// import { useEffect } from 'react';
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
@@ -8,6 +9,11 @@ const MovieCard = ({ movie }: { movie: BaseMedia }) => {
   const navigate = useNavigate();
 
   const displayTitle = movie.title ?? movie.name ?? 'Untitled';
+
+  //   useEffect(() => {
+  //     console.log(movie.poster_path);
+  //   }, [movie]);
+
   const slugify = (displayTitle: string): string => {
     if (!displayTitle) return 'untitled';
 
@@ -33,9 +39,11 @@ const MovieCard = ({ movie }: { movie: BaseMedia }) => {
       <img
         className="w-full h-full object-cover"
         src={
-          movie.poster_path
-            ? `${IMAGE_BASE_URL}${movie.poster_path}`
-            : defaultImage
+          movie.tmdb_id
+            ? movie.poster_path
+              ? `${IMAGE_BASE_URL}${movie.poster_path}`
+              : defaultImage
+            : `http://localhost:5000${movie.poster_path}`
         }
         alt={displayTitle}
       />

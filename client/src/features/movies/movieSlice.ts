@@ -4,6 +4,7 @@ import { getDiscoverMovies } from '../../utils/ApiFetch';
 
 interface Movie {
   id: number;
+  tmdb_id?: number;
   title: string;
   poster_path: string;
   backdrop_path: string;

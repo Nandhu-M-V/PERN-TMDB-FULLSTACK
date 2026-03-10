@@ -16,6 +16,7 @@ export const register = async (req: Request, res: Response) => {
     const tokens = await registerUser(email, password);
 
     res.json(tokens);
+    logger.info(`User ${email.split("@")[0]} has registered successfully.`);
   } catch (err: unknown) {
     logger.error(err);
     if (
@@ -41,9 +42,15 @@ export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
-    const tokens = await loginUser(email, password);
+    const { user, access, refresh } = await loginUser(email, password);
 
-    res.json(tokens);
+    res.json({
+      user,
+      access,
+      refresh,
+    });
+
+    logger.info(`User ${email.split("@")[0]} logged in successfully.`);
   } catch (error) {
     logger.error(error);
 

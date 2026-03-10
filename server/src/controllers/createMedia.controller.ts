@@ -11,9 +11,13 @@ import { pool } from "../config/db.js";
 
 export const createMedia = async (req: Request, res: Response) => {
   try {
-    const { title, overview, release_date, runtime, language } = req.body;
+    const { title, overview, release_date, runtime } = req.body;
 
     const mediaType = req.params.type;
+
+    if (mediaType !== "movies" && mediaType !== "tvshows") {
+      return res.status(400).json({ message: "Invalid media type" });
+    }
 
     const poster_path = req.file ? `/uploads/${req.file.filename}` : null;
     console.log("BODY:", req.body);

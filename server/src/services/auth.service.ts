@@ -26,18 +26,33 @@ export const registerUser = async (email: string, password: string) => {
 export const loginUser = async (email: string, password: string) => {
   const user = await findUserByEmail(email);
 
-  if (!user) throw new Error("Invalid credentials");
+  if (!user) {
+    throw new Error("Invalid credentials");
+  }
 
   const valid = await bcrypt.compare(password, user.password);
 
-  if (!valid) throw new Error("Invalid credentials");
+  if (!valid) {
+    throw new Error("Invalid credentials");
+  }
 
-  const access = signAccess(user);
+  const access = signAccess({
+    id: user.id,
+    email: user.email,
+    role: user.role,
+  });
+
   const refresh = signRefresh(user.id);
 
-  await storeRefreshToken(user.id, refresh);
-
-  return { access, refresh };
+  return {
+    user: {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    },
+    access,
+    refresh,
+  };
 };
 
 export const refreshUserToken = async (refreshToken: string) => {

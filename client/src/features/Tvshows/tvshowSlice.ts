@@ -4,6 +4,7 @@ import { getDiscoverTvShows } from '../../utils/ApiFetch';
 
 export interface TvShow {
   id: number;
+  tmdb_id?: string;
   name: string;
   poster_path: string;
   backdrop_path: string;

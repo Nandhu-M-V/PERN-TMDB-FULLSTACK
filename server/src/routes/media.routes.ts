@@ -9,6 +9,7 @@ import { updateMovie } from "../controllers/updateMovie.controller.js";
 import { updateTvShow } from "../controllers/updateTvShows.controller.js";
 import { upload } from "../middleware/upload.js";
 import { createMedia } from "../controllers/createMedia.controller.js";
+import { newMediaSchema } from "../validators/newMedia.schema.js";
 
 const router = Router();
 
@@ -16,12 +17,7 @@ const router = Router();
 router.post("/sync/:type", syncMedia);
 
 // Create media (with poster upload)
-router.post(
-  "/media/:type",
-  upload.single("poster"),
-  // validate(createMediaSchema),
-  createMedia,
-);
+router.post("/media/:type", upload.single("poster"), createMedia);
 
 // Fetch Movies
 router.get("/movies", getMovies);

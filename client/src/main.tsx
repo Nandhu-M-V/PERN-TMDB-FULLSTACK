@@ -5,7 +5,7 @@ import App from './App.tsx';
 import { Provider } from 'react-redux';
 import { store } from './app/store.ts';
 import './utils/i18n.ts';
-import { AuthProvider } from './context/authContext.tsx';
+import { AuthProvider } from './components/auth/AuthProvider.tsx';
 
 // import { Auth0Provider } from '@auth0/auth0-react';
 

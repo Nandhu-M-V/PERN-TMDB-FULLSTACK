@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 
 export interface JwtUser {
   id: number;
+  email: string;
   role: string;
 }
 

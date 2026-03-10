@@ -9,10 +9,10 @@ import EditMovie from './pages/EditMovies';
 import EditTvShow from './pages/EditTvShows';
 import FilterResultsPage from './pages/Filter';
 import NotFound from './pages/NotFound';
-import Login from './pages/LoginPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import Profile from './pages/Profile';
 import AddMedia from './pages/AddMedia';
+import LoginPage from './pages/LoginPage';
 
 const App = () => {
   return (
@@ -24,10 +24,10 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path="movies/edit/:id" element={<EditMovie />} />
           <Route path="tvshow/edit/:id" element={<EditTvShow />} />
-          <Route path="media/add/:type" element={<AddMedia />} />
+          <Route path="media/add" element={<AddMedia />} />
           <Route path="/movie/:id/:title" element={<MovieDetail />} />
           <Route path="tv/:id/:name" element={<TvDetail />} />
-          <Route path="login" element={<Login />} />
+          <Route path="login" element={<LoginPage />} />
           <Route
             path="/profile"
             element={

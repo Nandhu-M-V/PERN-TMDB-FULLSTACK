@@ -4,6 +4,7 @@ import { FaSearch, FaBars, FaTimes } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 import Search from './Search';
 import './styles/styles.css';
+import { useAuth } from '@/context/useAuth';
 
 // import LoginButton from './login-signup/LoginButton';
 // import LogoutButton from './login-signup/LogoutButton';
@@ -11,12 +12,13 @@ import './styles/styles.css';
 import { useEffect, useRef, useState } from 'react';
 import ThemeToggle from './DarkMode';
 import LanguageSwitcher from './LangSwitch';
-import ClearLocalStorageButton from './Clear/ClearLocalStorage';
-
 const Header = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { user, setUser } = useAuth();
+
   //   const { isAuthenticated, isLoading, error } = useAuth0();
 
   const [open, setOpen] = useState(false);
@@ -137,14 +139,20 @@ const Header = () => {
                       navigate('/filter');
                       setOpen(false);
                     }}
-                    className="w-full cursor-pointer text-left px-4 py-2 rounded-2xl bg-purple-600 border-b border-purple-950 hover:bg-purple-200 hover:text-purple-700 transition"
+                    className="w-full cursor-pointer text-left px-4 py-2 mb-1 rounded-2xl bg-purple-600 border-b border-purple-950 hover:bg-purple-200 hover:text-purple-700 transition"
                   >
                     {t('filter')}
                   </button>
 
-                  <div className="px-4 py-2 cursor-not-allowed hover:bg-purple-200 bg-purple-600 border-t border-purple-950 rounded-2xl hover:text-purple-700 transition">
-                    <ClearLocalStorageButton />
-                  </div>
+                  <button
+                    onClick={() => {
+                      navigate('/media/add');
+                      setOpen(false);
+                    }}
+                    className="w-full cursor-pointer text-left px-4 py-2 rounded-2xl bg-purple-600 border-b border-purple-950 hover:bg-purple-200 hover:text-purple-700 transition"
+                  >
+                    {/* {t('filter')} */} Add Media
+                  </button>
                 </div>
               )}
             </li>
@@ -192,9 +200,7 @@ const Header = () => {
               <div
                 className="p-4 rounded-2xl hover:bg-purple-800"
                 onClick={() => setMobileOpen(false)}
-              >
-                <ClearLocalStorageButton />
-              </div>
+              ></div>
             </ul>
           </div>
         </div>
@@ -222,6 +228,15 @@ const Header = () => {
               {isAuthenticated ? <LogoutButton /> : <LoginButton />}
             </div>
           )} */}
+          {user ? (
+            <div className="rounded-md shadow-black hover:bg-purple-800 text-gray-300 hover:text-white font-bold bg-purple-700 px-3 py-2">
+              <button onClick={() => setUser(null)}>Logout</button>
+            </div>
+          ) : (
+            <div className="rounded-md shadow-black hover:bg-purple-800 text-gray-300 hover:text-white font-bold bg-purple-700 px-3 py-2">
+              <button onClick={() => navigate('login')}>Login</button>
+            </div>
+          )}
 
           <ThemeToggle />
         </div>

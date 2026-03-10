@@ -3,7 +3,7 @@ import { fetchTvShows } from '@/features/Tvshows/tvshowSlice';
 import type { AppDispatch, RootState } from '../app/store';
 import HomeBanner from '@/components/HomeBanner';
 import Loading from '@/components/Loading';
-// import { useAuth0 } from '@auth0/auth0-react';
+// import { useAuth } from '@/context/useAuth';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import HomeCards from '@/components/Homecards';
@@ -14,6 +14,8 @@ import { useTranslation } from 'react-i18next';
 
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
+
+  //   const { user, setUser } = useAuth();
 
   const { t } = useTranslation();
   const IMAGE_BANNER_URL = 'https://image.tmdb.org/t/p/original';
@@ -26,7 +28,6 @@ const Home = () => {
     (state: RootState) => state.tvshow
   );
 
-  //   const { user } = useAuth0();
   const roles = ['Admin']; // Replace with actual role fetching logic
 
   //   useEffect(() => {
@@ -96,11 +97,16 @@ const Home = () => {
             mt-5
         "
         >
-          {movies.map((movie) => (
-            <div key={movie.id} className="snap-start">
-              <HomeCards movie={movie} mediaType="movie" />
-            </div>
-          ))}
+          {movies
+            .filter(
+              (movie): movie is typeof movie & { tmdb_id: number } =>
+                movie.tmdb_id !== undefined
+            )
+            .map((movie) => (
+              <div key={movie.id} className="snap-start">
+                <HomeCards movie={movie} mediaType="movie" />
+              </div>
+            ))}
         </div>
         <div className="absolute z-10 top-194 pointer-events-none inset-0 bg-linear-to-b from-black/70 via-black/30 to-transparent" />
 
@@ -122,11 +128,16 @@ const Home = () => {
             mb-15
         "
         >
-          {tvShows.map((movie) => (
-            <div key={movie.id} className="snap-start">
-              <HomeCards movie={movie} mediaType="tv" />
-            </div>
-          ))}
+          {tvShows
+            .filter(
+              (movie): movie is typeof movie & { tmdb_id: number } =>
+                movie.tmdb_id !== undefined
+            )
+            .map((movie) => (
+              <div key={movie.id} className="snap-start">
+                <HomeCards movie={movie} mediaType="tv" />
+              </div>
+            ))}
         </div>
       </div>
     </>

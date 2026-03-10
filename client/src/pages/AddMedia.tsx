@@ -72,8 +72,8 @@ const AddMedia = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 p-6">
-      <div className="w-full max-w-xl bg-gray-500 shadow-lg rounded-xl p-8">
+    <div className="min-h-screen flex items-center justify-center bg-gray-300 dark:bg-black p-6">
+      <div className="w-full max-w-3xl mt-16 bg-purple-500 dark:bg-purple-600/30 shadow-lg rounded-xl p-8">
         <h2 className="text-3xl font-bold mb-6 text-center">Add New Media</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
@@ -189,7 +189,7 @@ const AddMedia = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition disabled:opacity-50"
+            className="w-full bg-purple-800 hover:bg-purple-700 text-white font-medium py-2 rounded-lg transition disabled:opacity-50"
           >
             {loading ? 'Adding...' : 'Add Media'}
           </button>

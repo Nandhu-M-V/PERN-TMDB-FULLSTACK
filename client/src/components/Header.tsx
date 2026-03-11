@@ -1,14 +1,9 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaSearch, FaBars, FaTimes } from 'react-icons/fa';
-// import { useAuth0 } from '@auth0/auth0-react';
 import { useTranslation } from 'react-i18next';
 import Search from './Search';
 import './styles/styles.css';
 import { useAuth } from '@/context/useAuth';
-
-// import LoginButton from './login-signup/LoginButton';
-// import LogoutButton from './login-signup/LogoutButton';
-
 import { useEffect, useRef, useState } from 'react';
 import ThemeToggle from './DarkMode';
 import LanguageSwitcher from './LangSwitch';
@@ -19,8 +14,6 @@ const Header = () => {
 
   const { user, setUser } = useAuth();
 
-  //   const { isAuthenticated, isLoading, error } = useAuth0();
-
   const [open, setOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(true);
@@ -28,6 +21,14 @@ const Header = () => {
 
   const dropdownRef = useRef<HTMLLIElement>(null);
   const mobileRef = useRef<HTMLDivElement>(null);
+
+  const handleAddMedia = () => {
+    if (user?.role === 'admin') {
+      navigate('/media/add');
+    } else {
+      alert('Only an Admin can add Media ');
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -146,7 +147,8 @@ const Header = () => {
 
                   <button
                     onClick={() => {
-                      navigate('/media/add');
+                      handleAddMedia();
+
                       setOpen(false);
                     }}
                     className="w-full cursor-pointer text-left px-4 py-2 rounded-sm border-b border-black bg-red-600  hover:bg-red-200 hover:text-red-700 transition"
@@ -200,7 +202,7 @@ const Header = () => {
               <div
                 className="p-4 rounded-md hover:bg-red-800"
                 onClick={() => {
-                  navigate('media/add');
+                  handleAddMedia();
                   setMobileOpen(false);
                 }}
               >
@@ -233,7 +235,14 @@ const Header = () => {
           )} */}
           {user ? (
             <div className="rounded-md shadow-black hover:bg-red-800 text-gray-300 hover:text-white font-bold bg-red-700 px-3 py-2">
-              <button onClick={() => setUser(null)}>Logout</button>
+              <button
+                onClick={() => {
+                  localStorage.removeItem('user');
+                  setUser(null);
+                }}
+              >
+                Logout
+              </button>
             </div>
           ) : (
             <div className="rounded-md shadow-black hover:bg-red-800 text-gray-300 hover:text-white font-bold bg-red-700 px-3 py-2">

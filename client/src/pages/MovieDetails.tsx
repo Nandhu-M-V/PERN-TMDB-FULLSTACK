@@ -7,8 +7,16 @@ import type { SimilarMovie } from '@/utils/ApiFetch';
 import defautImage from '../assets/images/ComingSoon.jpg';
 import defaultPoster from '../assets/images/defaultposter.jpg';
 
-import { fetchMovieid, fetchSimilarMovies } from '@/utils/ApiFetch';
+import {
+  deleteMovie,
+  fetchMovieid,
+  fetchSimilarMovies,
+} from '@/utils/ApiFetch';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '@/context/useAuth';
+import { useDispatch } from 'react-redux';
+import type { AppDispatch } from '@/app/store';
+import { fetchMovies } from '@/features/movies/movieSlice';
 
 interface Genre {
   id: number;
@@ -55,8 +63,8 @@ const MovieDetail = () => {
       ? `http://localhost:5000${movie.poster_path}`
       : defaultPoster;
 
-  //   const { user } = useAuth0();
-  const roles = ['Admin']; // Replace with actual role fetching logic
+  const { user } = useAuth();
+  const roles = user?.role; // Replace with actual role fetching logic
 
   //adding to url
   const slugify = (displayTitle: string): string => {
@@ -93,6 +101,23 @@ const MovieDetail = () => {
 
     getShow();
   }, [id, i18n.language]);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleDelete = () => {
+    if (id) {
+      try {
+        const ok = confirm('Are you sure you wish to delete this movie?');
+
+        if (ok) {
+          deleteMovie(Number(id));
+          navigate('/');
+          dispatch(fetchMovies(1));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   if (loading) return <Loading />;
   if (!movie)
@@ -173,19 +198,37 @@ const MovieDetail = () => {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              if (!roles || !roles.includes('Admin')) {
+              if (!roles || !roles.includes('admin')) {
                 alert('You do not have permission to edit this page.');
                 return;
               }
               navigate(`/movies/edit/${movie.id}`);
             }}
-            className={`absolute bottom-0 left-2/3 z-10
+            className={`absolute bottom-0 right-40 z-10
+                   bg-blue-600 hover:bg-blue-700
+                   px-3 py-3 rounded-md
+                   cursor-pointer text-sm font-semibold
+                   transition ${roles && roles.includes('admin') ? '' : 'hidden'}`}
+          >
+            Edit Page
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!roles || !roles.includes('admin')) {
+                alert('You do not have permission to delete movies.');
+                return;
+              }
+
+              handleDelete();
+            }}
+            className={`absolute bottom-0 right-10 z-10
                    bg-red-600 hover:bg-red-700
                    px-3 py-3 rounded-md
                    cursor-pointer text-sm font-semibold
-                   transition ${roles && roles.includes('Admin') ? '' : 'hidden'}`}
+                   transition ${roles && roles.includes('admin') ? '' : 'hidden'}`}
           >
-            Edit Page
+            Delete Movie
           </button>
         </div>
       </div>

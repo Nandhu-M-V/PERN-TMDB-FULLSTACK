@@ -1,13 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Loading from '@/components/Loading';
-import { fetchShowid } from '@/utils/ApiFetch';
+import { deleteTvshow, fetchShowid } from '@/utils/ApiFetch';
 // import { useAuth0 } from '@auth0/auth0-react';
 // import defautImage from '../assets/images/ComingSoon.jpg';
+
+import { useDispatch } from 'react-redux';
+import { fetchTvShows } from '@/features/Tvshows/tvshowSlice';
+import type { AppDispatch } from '@/app/store';
+
 import defaultPoster from '../assets/images/defaultposter.jpg';
 
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
+import { useAuth } from '@/context/useAuth';
 
 export interface Genre {
   id: number;
@@ -87,8 +93,10 @@ const TvDetail = () => {
     getRelated();
   }, [showId]);
 
-  //   const { user } = useAuth0();
-  const roles = ['Admin']; // Replace with actual role fetching logic
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { user } = useAuth();
+  const roles = user?.role; // Replace with actual role fetching logic
 
   const { i18n } = useTranslation();
 
@@ -111,6 +119,22 @@ const TvDetail = () => {
 
     getShow();
   }, [showId, i18n.language]);
+
+  const handleDelete = () => {
+    if (id) {
+      try {
+        const ok = confirm('Are you sure you wish to delete this Tvshow?');
+
+        if (ok) {
+          deleteTvshow(Number(id));
+          dispatch(fetchTvShows(1));
+          navigate('/');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   const posterUrl = show?.tmdb_id
     ? show.poster_path
@@ -176,15 +200,33 @@ const TvDetail = () => {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              if (!roles || !roles.includes('Admin')) {
+              if (!roles || !roles.includes('admin')) {
                 alert('You do not have permission to edit this page.');
                 return;
               }
               navigate(`/tvshow/edit/${show.id}`);
             }}
-            className={`absolute bottom-0 cursor-pointer right-0 bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md text-sm font-semibold transition ${roles && roles.includes('Admin') ? '' : 'hidden'}`}
+            className={`absolute bottom-0 cursor-pointer right-30 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-semibold transition ${roles && roles.includes('admin') ? '' : 'hidden'}`}
           >
             Edit Show
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!roles || !roles.includes('admin')) {
+                alert('You do not have permission to delete movies.');
+                return;
+              }
+
+              handleDelete();
+            }}
+            className={`absolute bottom-0 right-0 z-10
+                             bg-red-600 hover:bg-red-700
+                             px-3 py-2 rounded-md
+                             cursor-pointer text-sm font-semibold
+                             transition ${roles && roles.includes('admin') ? '' : 'hidden'}`}
+          >
+            Delete Show
           </button>
 
           <div className="mt-6">

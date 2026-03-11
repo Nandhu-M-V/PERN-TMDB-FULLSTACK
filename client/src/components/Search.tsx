@@ -6,23 +6,20 @@ interface SearchProps {
   autoFocus?: boolean;
 }
 
-const API_KEY = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
-
 const Search = ({ autoFocus }: SearchProps) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<BaseMedia[]>([]);
   const [loading, setLoading] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
 
+  const inputRef = useRef<HTMLInputElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
+  const debounceRef = useRef<number | null>(null);
+
   const navigate = useNavigate();
-  const debounceRef = useRef<number>(1);
 
   useEffect(() => {
     if (autoFocus) {
-      setTimeout(() => {
-        inputRef.current?.focus();
-      }, 200);
+      setTimeout(() => inputRef.current?.focus(), 200);
     }
   }, [autoFocus]);
 
@@ -34,19 +31,15 @@ const Search = ({ autoFocus }: SearchProps) => {
 
     try {
       setLoading(true);
+
       const res = await fetch(
-        `https://api.themoviedb.org/3/search/multi?query=${encodeURIComponent(
+        `http://localhost:5000/api/search?query=${encodeURIComponent(
           searchQuery
-        )}&include_adult=false&language=en-US&page=1`,
-        {
-          headers: {
-            Authorization: `Bearer ${API_KEY}`,
-            accept: 'application/json',
-          },
-        }
+        )}`
       );
+
       const data = await res.json();
-      setResults(data.results && data.results.length > 0 ? data.results : []);
+      setResults(data.results ?? []);
     } catch (error) {
       console.error(error);
       setResults([]);
@@ -56,13 +49,19 @@ const Search = ({ autoFocus }: SearchProps) => {
   };
 
   useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
+    if (debounceRef.current !== null) {
+      clearTimeout(debounceRef.current);
+    }
 
     debounceRef.current = window.setTimeout(() => {
       fetchMovies(query);
     }, 500);
 
-    return () => clearTimeout(debounceRef.current);
+    return () => {
+      if (debounceRef.current !== null) {
+        clearTimeout(debounceRef.current);
+      }
+    };
   }, [query]);
 
   const slugify = (displayTitle: string): string => {
@@ -81,10 +80,11 @@ const Search = ({ autoFocus }: SearchProps) => {
   const handleSelect = (type: string, id: number, name: string) => {
     setQuery('');
     setResults([]);
+
     if (type.toLowerCase() === 'movie') {
       navigate(`/movie/${id}/${slugify(name)}`);
     } else if (type.toLowerCase() === 'tv') {
-      navigate(`/tv/${id}/${name}`);
+      navigate(`/tv/${id}/${slugify(name)}`);
     }
   };
 
@@ -97,12 +97,14 @@ const Search = ({ autoFocus }: SearchProps) => {
         setResults([]);
       }
     };
+
     document.addEventListener('mousedown', handleClickOutside);
+
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
-    <div ref={searchRef} className=" z-20 md:w-md lg:w-2xl">
+    <div ref={searchRef} className="z-20 md:w-md lg:w-2xl">
       <div className="relative">
         <input
           ref={inputRef}
@@ -128,6 +130,7 @@ const Search = ({ autoFocus }: SearchProps) => {
         <div className="bg-black/90 backdrop-blur-lg absolute top-16 max-w-3xl w-full rounded-xl max-h-96 overflow-y-auto custom-scrollbar shadow-2xl border border-gray-800">
           {results.slice(0, 15).map((item) => (
             <div
+              key={item.id}
               onClick={() =>
                 handleSelect(
                   item.media_type || 'movie',
@@ -135,7 +138,6 @@ const Search = ({ autoFocus }: SearchProps) => {
                   item.title || item.name || ''
                 )
               }
-              key={item.id}
               className="flex items-center gap-4 p-3 hover:bg-gray-800 transition cursor-pointer"
             >
               {item.poster_path && (
@@ -145,6 +147,7 @@ const Search = ({ autoFocus }: SearchProps) => {
                   className="w-12 rounded-md"
                 />
               )}
+
               <div>
                 <p className="text-white font-medium">
                   {item.title || item.name}

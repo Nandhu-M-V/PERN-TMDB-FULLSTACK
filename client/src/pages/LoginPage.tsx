@@ -22,7 +22,7 @@ const LoginPage = () => {
 
       setUser(data.user);
 
-      console.log('Auth data:', data);
+      //   console.log('Auth data:', data);
 
       navigate('/');
     } catch (err) {

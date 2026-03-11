@@ -85,6 +85,8 @@ export const fetchMovieGenres = async (): Promise<Genre[]> => {
   return res.data.genres;
 };
 
+// get all movies
+
 export const getDiscoverMovies = async (page: number): Promise<Movie[]> => {
   const res = await axios.get('http://localhost:5000/api/movies', {
     params: {
@@ -113,6 +115,8 @@ export const getFilterMovies = async (
   return res.data;
 };
 
+// get all tvshows
+
 export const getDiscoverTvShows = async (page: number): Promise<TvShow[]> => {
   const res = await tmdbApi.get('http://localhost:5000/api/tvshows', {
     params: {
@@ -125,18 +129,8 @@ export const getDiscoverTvShows = async (page: number): Promise<TvShow[]> => {
 
   return res.data.results;
 };
-// export const getDiscoverTvShows = async (page: number): Promise<TvShow[]> => {
-//   const res = await tmdbApi.get('/trending/tv/week', {
-//     params: {
-//       include_video: false,
-//       language: i18n.language,
-//       page,
-//       sort_by: 'popularity.desc',
-//     },
-//   });
 
-//   return res.data.results;
-// };
+// get tvshow
 
 export const fetchShowid = async (id: string): Promise<TvDetailType> => {
   const res = await axios.get(`http://localhost:5000/api/tvshow/${id}`, {
@@ -146,6 +140,8 @@ export const fetchShowid = async (id: string): Promise<TvDetailType> => {
   return res.data;
 };
 
+// get movie
+
 export const fetchMovieid = async (id: string): Promise<MovieDetailType> => {
   const res = await axios.get(`http://localhost:5000/api/movie/${id}`, {
     // params: { language: i18n.language },
@@ -153,6 +149,8 @@ export const fetchMovieid = async (id: string): Promise<MovieDetailType> => {
 
   return res.data;
 };
+
+// similar movies for detail page
 
 export const fetchSimilarMovies = async (): Promise<SimilarMovie[]> => {
   const res = await axios.get('http://localhost:5000/api/movies', {
@@ -163,4 +161,15 @@ export const fetchSimilarMovies = async (): Promise<SimilarMovie[]> => {
   });
 
   return res.data.results;
+};
+
+// delete Movies
+
+export const deleteMovie = async (id: number) => {
+  await axios.delete(`http://localhost:5000/api/media/movie/${id}`);
+};
+
+// delete Tvshows
+export const deleteTvshow = async (id: number) => {
+  await axios.delete(`http://localhost:5000/api/media/tv/${id}`);
 };

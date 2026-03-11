@@ -4,6 +4,7 @@ import type { TvDetailType } from './TvDetail';
 import type { AppDispatch } from '../app/store';
 import { useDispatch } from 'react-redux';
 import { fetchTvShows } from '@/features/Tvshows/tvshowSlice';
+import { useAuth } from '@/context/useAuth';
 
 const EditTvShow = () => {
   const { id } = useParams<{ id: string }>();
@@ -12,6 +13,9 @@ const EditTvShow = () => {
 
   const [tv, setTv] = useState<TvDetailType | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const { user } = useAuth();
+  const role = user?.role;
 
   const [title, setTitle] = useState('');
   const [overview, setOverview] = useState('');
@@ -73,6 +77,10 @@ const EditTvShow = () => {
   };
 
   const handleSubmit = async () => {
+    if (role != 'admin') {
+      alert('Only admin can edit movies!!');
+      return;
+    }
     if (!tv || !validate()) return;
 
     const updatedShow = {

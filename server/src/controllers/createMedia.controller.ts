@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { pool } from "../config/db.js";
+import { logger } from "../utils/logger.js";
 
 // interface CreateMediaBody {
 //   title: string;
@@ -34,8 +35,10 @@ export const createMedia = async (req: Request, res: Response) => {
     );
 
     res.status(201).json(result.rows[0]);
+    logger.info(`New ${mediaType} has been added`);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to create media" });
+    logger.error(error);
   }
 };

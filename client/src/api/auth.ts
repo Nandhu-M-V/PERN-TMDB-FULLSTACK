@@ -29,8 +29,9 @@ export const login = async (email: string, password: string) => {
   });
 
   const data = await handleResponse(res);
+  localStorage.setItem('user', JSON.stringify(data.user));
 
-  console.log(' Login success:', data);
+  //   console.log(' Login success:', data);
 
   return data;
 };
@@ -47,7 +48,7 @@ export const register = async (email: string, password: string) => {
 
   const data = await handleResponse(res);
 
-  console.log(' Register success:', data);
+  //   console.log(' Register success:', data);
 
   return data;
 };
@@ -62,7 +63,7 @@ export const refresh = async () => {
 
   const data = await handleResponse(res);
 
-  console.log(' Token refreshed:', data);
+  //   console.log(' Token refreshed:', data);
 
   return data;
 };

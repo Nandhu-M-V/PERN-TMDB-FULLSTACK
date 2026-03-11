@@ -4,6 +4,7 @@ import type { AppDispatch } from '../app/store';
 import type { MovieDetailType } from './MovieDetails';
 import { fetchMovies } from '@/features/movies/movieSlice';
 import { useDispatch } from 'react-redux';
+import { useAuth } from '@/context/useAuth';
 
 const EditMovie = () => {
   const { id } = useParams<{ id: string }>();
@@ -12,6 +13,9 @@ const EditMovie = () => {
 
   const [movie, setMovie] = useState<MovieDetailType | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const { user } = useAuth();
+  const role = user?.role;
 
   const [title, setTitle] = useState('');
   const [overview, setOverview] = useState('');
@@ -72,6 +76,11 @@ const EditMovie = () => {
   };
 
   const handleSubmit = async () => {
+    if (role != 'admin') {
+      alert('Only admin can edit movies!!');
+      return;
+    }
+
     if (!movie || !validate()) return;
 
     const updatedMovie = {

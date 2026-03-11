@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { pool } from "../config/db.js";
+import { logger } from "../utils/logger.js";
 
 export const getMediaById = async (req: Request, res: Response) => {
   try {
@@ -21,7 +22,9 @@ export const getMediaById = async (req: Request, res: Response) => {
     };
 
     res.json(media);
+    // logger.info(`fetched Media`);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch media" });
+    logger.error(error);
   }
 };

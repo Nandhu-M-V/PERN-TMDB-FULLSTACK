@@ -30,9 +30,9 @@ const LanguageSwitcher = () => {
         value={i18n.language}
         onChange={handleChange}
         className="rounded-md shadow-xs shadow-black
-        bg-purple-700 text-gray-200 font-bold
-        px-3 py-3 hover:bg-purple-800 text-sm cursor-pointer
-        focus:outline-none focus:ring-2 focus:ring-purple-500"
+        bg-red-700 text-gray-200 font-bold
+        px-3 py-3 hover:bg-red-800 text-sm cursor-pointer
+        focus:outline-none focus:ring-2 focus:ring-red-500"
       >
         <option className="cursor-pointer" value="en">
           {t('english')}

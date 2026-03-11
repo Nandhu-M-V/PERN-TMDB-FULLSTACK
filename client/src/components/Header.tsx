@@ -73,23 +73,23 @@ const Header = () => {
   return (
     <header
       style={{ transform: `translateY(-${offset}px)` }}
-      className="fixed w-full top-0 px-3 bg-purple-400/50 dark:bg-gray-600/50
-      border-b border-purple-700 z-50 backdrop-blur-lg
+      className="fixed w-full top-0 px-3 bg-red-400/50 dark:bg-gray-600/50
+      border-b border-red-700 z-50 backdrop-blur-lg
       transition-transform duration-75"
     >
       <nav className="w-full flex justify-start items-center h-20 dark:text-white relative">
         <div className="flex gap-5 min-w-1/2">
           <h1
-            className="text-4xl font-extrabold [@media(max-width:640px)]:hidden text-purple-700 hover:scale-105 hover:text-purple-600 cursor-pointer"
+            className="text-4xl font-extrabold [@media(max-width:640px)]:hidden text-white dark:text-red-700 hover:scale-105 hover:text-red-600 cursor-pointer"
             onClick={() => navigate('/')}
           >
-            MovieApp
+            FlixNova
           </h1>
           <h1
-            className="text-4xl font-extrabold [@media(max-width:640px)]:block hidden  text-purple-700 hover:scale-105 hover:text-purple-600 cursor-pointer"
+            className="text-4xl font-extrabold [@media(max-width:640px)]:block hidden  text-red-700 hover:scale-105 hover:text-red-600 cursor-pointer"
             onClick={() => navigate('/')}
           >
-            MA
+            FN
           </h1>
           <button
             className="[@media(max-width:1030px)]:flex hidden top-2.5 relative text-2xl z-50"
@@ -103,10 +103,10 @@ const Header = () => {
 
           <ul className="flex [@media(max-width:1030px)]:hidden gap-2 text-lg font-semibold">
             <li
-              className={`cursor-pointer p-2 px-3 rounded-2xl transition hover:bg-purple-200 hover:text-purple-700 ${
+              className={`cursor-pointer p-2 px-3 rounded-2xl   transition hover:bg-red-200 hover:text-red-700 ${
                 location.pathname === '/movies/discover'
-                  ? 'bg-purple-200 text-purple-700 border border-purple-700'
-                  : ''
+                  ? 'bg-red-200 text-red-700 border border-red-700'
+                  : 'border border-white/0'
               }`}
               onClick={() => navigate('/movies/discover')}
             >
@@ -114,9 +114,9 @@ const Header = () => {
             </li>
 
             <li
-              className={`cursor-pointer p-2 px-3 rounded-2xl transition hover:bg-purple-200 hover:text-purple-700 ${
+              className={`cursor-pointer p-2 px-3 rounded-2xl transition hover:bg-red-200 hover:text-red-700 ${
                 location.pathname === '/tvshow/discover'
-                  ? 'bg-purple-200 text-purple-700 border border-purple-700'
+                  ? 'bg-red-200 text-red-700 border border-red-700'
                   : ''
               }`}
               onClick={() => navigate('/tvshow/discover')}
@@ -127,19 +127,19 @@ const Header = () => {
             <li ref={dropdownRef} className="relative">
               <div
                 onClick={() => setOpen((prev) => !prev)}
-                className="cursor-pointer p-2 px-3 rounded-2xl transition hover:bg-purple-200 hover:text-purple-700"
+                className="cursor-pointer p-2 px-3 rounded-2xl transition hover:bg-red-200 hover:text-red-700"
               >
                 {t('more')}
               </div>
 
               {open && (
-                <div className="absolute left-0 mt-2 w-40 bg-purple-700 p-0.5 border-b border-purple-950 shadow-lg rounded-2xl z-50">
+                <div className="absolute left-0 mt-2 w-40 bg-red-700 p-0.5 border-b border-red-950 shadow-lg rounded-md z-50">
                   <button
                     onClick={() => {
                       navigate('/filter');
                       setOpen(false);
                     }}
-                    className="w-full cursor-pointer text-left px-4 py-2 mb-1 rounded-2xl bg-purple-600 border-b border-purple-950 hover:bg-purple-200 hover:text-purple-700 transition"
+                    className="w-full cursor-pointer text-left px-4 py-2 rounded-sm bg-red-600 border-b border-red-950 hover:bg-red-200 hover:text-red-700 transition"
                   >
                     {t('filter')}
                   </button>
@@ -149,7 +149,7 @@ const Header = () => {
                       navigate('/media/add');
                       setOpen(false);
                     }}
-                    className="w-full cursor-pointer text-left px-4 py-2 rounded-2xl bg-purple-600 border-b border-purple-950 hover:bg-purple-200 hover:text-purple-700 transition"
+                    className="w-full cursor-pointer text-left px-4 py-2 rounded-sm border-b border-black bg-red-600  hover:bg-red-200 hover:text-red-700 transition"
                   >
                     {/* {t('filter')} */} Add Media
                   </button>
@@ -160,7 +160,7 @@ const Header = () => {
 
           <div
             ref={mobileRef}
-            className={`absolute top-20 left-0 w-full rounded-lg bg-purple-700 text-white shadow-lg [@media(max-width:1030px)]:block hidden z-40 transition-all duration-300 ${
+            className={`absolute top-20 left-0 w-full rounded-lg bg-red-700 text-white shadow-lg [@media(max-width:1030px)]:block hidden z-40 transition-all duration-300 ${
               mobileOpen
                 ? 'translate-y-0 opacity-100'
                 : '-translate-y-5 opacity-0 pointer-events-none'
@@ -168,7 +168,7 @@ const Header = () => {
           >
             <ul className="flex flex-col text-lg font-semibold">
               <li
-                className="p-4 cursor-pointer rounded-2xl border-b border-purple-600 hover:bg-purple-800"
+                className="p-4 cursor-pointer rounded-md border-b border-red-600 hover:bg-red-800"
                 onClick={() => {
                   navigate('/movies/discover');
                   setMobileOpen(false);
@@ -178,7 +178,7 @@ const Header = () => {
               </li>
 
               <li
-                className="p-4 cursor-pointer rounded-2xl border-b border-purple-600 hover:bg-purple-800"
+                className="p-4 cursor-pointer rounded-md border-b border-red-600 hover:bg-red-800"
                 onClick={() => {
                   navigate('/tvshow/discover');
                   setMobileOpen(false);
@@ -188,7 +188,7 @@ const Header = () => {
               </li>
 
               <li
-                className="p-4 cursor-pointer rounded-2xl border-b border-purple-600 hover:bg-purple-800"
+                className="p-4 cursor-pointer rounded-md border-b border-red-600 hover:bg-red-800"
                 onClick={() => {
                   navigate('/filter');
                   setMobileOpen(false);
@@ -198,9 +198,14 @@ const Header = () => {
               </li>
 
               <div
-                className="p-4 rounded-2xl hover:bg-purple-800"
-                onClick={() => setMobileOpen(false)}
-              ></div>
+                className="p-4 rounded-md hover:bg-red-800"
+                onClick={() => {
+                  navigate('media/add');
+                  setMobileOpen(false);
+                }}
+              >
+                Add Media
+              </div>
             </ul>
           </div>
         </div>
@@ -208,10 +213,8 @@ const Header = () => {
         <div className="flex items-center justify-end pl-20 gap-2 min-w-1/2 [@media(max-width:640px)]:w-auto">
           <button
             onClick={() => setShowSearch((prev) => !prev)}
-            className={`text-2xl cursor-pointer rounded-2xl px-4 py-3 hover:text-purple-500 hover:bg-purple-200 ${
-              showSearch
-                ? 'text-purple-800 border border-purple-700 bg-purple-200'
-                : ''
+            className={`text-2xl cursor-pointer rounded-2xl px-4 py-3 hover:text-red-500 hover:bg-red-200 ${
+              showSearch ? 'text-red-800 border border-red-700 bg-red-200' : ''
             }`}
           >
             <FaSearch />
@@ -224,16 +227,16 @@ const Header = () => {
           {isLoading ? (
             <span className="loader"></span>
           ) : (
-            <div className="rounded-md shadow-black hover:bg-purple-800 text-gray-300 hover:text-white font-bold bg-purple-700 px-3 py-2">
+            <div className="rounded-md shadow-black hover:bg-red-800 text-gray-300 hover:text-white font-bold bg-red-700 px-3 py-2">
               {isAuthenticated ? <LogoutButton /> : <LoginButton />}
             </div>
           )} */}
           {user ? (
-            <div className="rounded-md shadow-black hover:bg-purple-800 text-gray-300 hover:text-white font-bold bg-purple-700 px-3 py-2">
+            <div className="rounded-md shadow-black hover:bg-red-800 text-gray-300 hover:text-white font-bold bg-red-700 px-3 py-2">
               <button onClick={() => setUser(null)}>Logout</button>
             </div>
           ) : (
-            <div className="rounded-md shadow-black hover:bg-purple-800 text-gray-300 hover:text-white font-bold bg-purple-700 px-3 py-2">
+            <div className="rounded-md shadow-black hover:bg-red-800 text-gray-300 hover:text-white font-bold bg-red-700 px-3 py-2">
               <button onClick={() => navigate('login')}>Login</button>
             </div>
           )}

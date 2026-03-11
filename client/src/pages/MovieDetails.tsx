@@ -105,7 +105,7 @@ const MovieDetail = () => {
   const year = movie.release_date?.split('-')[0];
 
   return (
-    <div className="cursor-default text-white pt-20 bg-purple-400/50 dark:bg-gray-950 min-h-screen">
+    <div className="cursor-default text-white pt-20 bg-red-400/50 dark:bg-gray-950 min-h-screen">
       <div
         className="relative h-[70vh] bg-cover bg-top"
         style={
@@ -180,7 +180,7 @@ const MovieDetail = () => {
               navigate(`/movies/edit/${movie.id}`);
             }}
             className={`absolute bottom-0 left-2/3 z-10
-                   bg-purple-600 hover:bg-purple-700
+                   bg-red-600 hover:bg-red-700
                    px-3 py-3 rounded-md
                    cursor-pointer text-sm font-semibold
                    transition ${roles && roles.includes('Admin') ? '' : 'hidden'}`}
@@ -191,7 +191,7 @@ const MovieDetail = () => {
       </div>
       {/* similars --- */}
       <div className="px-6 md:px-16 mt-16 pb-20">
-        <h2 className=" cursor-default text-purple-700  text-2xl font-bold mb-6">
+        <h2 className=" cursor-default text-red-700  text-2xl font-bold mb-6">
           Similar Movies
         </h2>
 

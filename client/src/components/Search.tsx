@@ -113,7 +113,7 @@ const Search = ({ autoFocus }: SearchProps) => {
           className="w-full h-15 pl-14 pr-6 rounded-full
                      bg-gray-600/50 backdrop-blur-md border border-gray-700
                      text-white placeholder-gray-400
-                     focus:outline-none focus:ring-2 focus:ring-purple-600
+                     focus:outline-none focus:ring-2 focus:ring-red-600
                      transition-all duration-300"
         />
       </div>

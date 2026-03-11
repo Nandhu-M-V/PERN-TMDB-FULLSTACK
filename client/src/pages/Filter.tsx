@@ -164,7 +164,7 @@ const FilterResultsPage = () => {
                 }
                 className={`px-3 py-1 rounded text-sm ${
                   selectedGenres.includes(genre.id)
-                    ? 'bg-purple-600 text-white'
+                    ? 'bg-red-600 text-white'
                     : 'bg-gray-200 dark:bg-gray-700'
                 }`}
               >
@@ -304,7 +304,7 @@ const FilterResultsPage = () => {
           <button
             disabled={page === totalPages}
             onClick={() => setPage((prev) => prev + 1)}
-            className="px-4 py-2 bg-purple-600 rounded disabled:opacity-50"
+            className="px-4 py-2 bg-red-600 rounded disabled:opacity-50"
           >
             Next
           </button>

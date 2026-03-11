@@ -116,7 +116,7 @@ const EditMovie = () => {
   return (
     <div className="min-h-screen bg-gray-300 dark:bg-black text-black dark:text-white flex justify-center pt-28 px-6">
       <div className="w-full max-w-2xl space-y-6">
-        <h1 className="text-3xl font-bold text-purple-600">Edit Movie</h1>
+        <h1 className="text-3xl font-bold text-red-600">Edit Movie</h1>
 
         <div className="flex flex-col gap-2">
           <label htmlFor="title" className="font-medium">
@@ -127,7 +127,7 @@ const EditMovie = () => {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="p-3 w-full rounded border border-black dark:border-purple-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="p-3 w-full rounded border border-black dark:border-red-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500"
           />
           {errors.title && (
             <p className="text-red-500 text-sm">{errors.title}</p>
@@ -143,7 +143,7 @@ const EditMovie = () => {
             rows={6}
             value={overview}
             onChange={(e) => setOverview(e.target.value)}
-            className="p-3 w-full rounded border border-black dark:border-purple-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="p-3 w-full rounded border border-black dark:border-red-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500"
           />
           {errors.overview && (
             <p className="text-red-500 text-sm">{errors.overview}</p>
@@ -159,7 +159,7 @@ const EditMovie = () => {
             type="text"
             value={tagline}
             onChange={(e) => setTagline(e.target.value)}
-            className="p-3 w-full rounded border border-black dark:border-purple-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="p-3 w-full rounded border border-black dark:border-red-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500"
           />
         </div>
 
@@ -172,7 +172,7 @@ const EditMovie = () => {
             type="date"
             value={release_date || '2000-01-01'}
             onChange={(e) => setReleaseDate(e.target.value)}
-            className="p-3 w-full rounded border border-black dark:border-purple-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="p-3 w-full rounded border border-black dark:border-red-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500"
           />
           {errors.release_date && (
             <p className="text-red-500 text-sm">{errors.release_date}</p>
@@ -189,7 +189,7 @@ const EditMovie = () => {
             step="0.1"
             value={vote_average}
             onChange={(e) => setVote(Number(e.target.value))}
-            className="p-3 w-full rounded border border-black dark:border-purple-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="p-3 w-full rounded border border-black dark:border-red-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500"
           />
           {errors.vote_average && (
             <p className="text-red-500 text-sm">{errors.vote_average}</p>
@@ -198,7 +198,7 @@ const EditMovie = () => {
 
         <button
           onClick={handleSubmit}
-          className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition duration-200"
+          className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition duration-200"
         >
           Save Changes
         </button>

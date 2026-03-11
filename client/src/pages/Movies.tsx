@@ -33,7 +33,7 @@ const Movies = () => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="dark:bg-black bg-purple-300/70 pb-5 min-h-screen transition-all duration-200 text-white">
+    <div className="dark:bg-black bg-red-300/70 pb-5 min-h-screen transition-all duration-200 text-white">
       <div className="absolute top-180 inset-0 bg-linear-to-b from-black/40 via-black/10 to-transparent" />
 
       <Carousal movies={movies} />
@@ -63,7 +63,7 @@ const Movies = () => {
       ${
         page === 1
           ? 'bg-gray-400 cursor-not-allowed opacity-60'
-          : 'bg-purple-700 cursor-pointer hover:bg-purple-800 active:scale-95'
+          : 'bg-red-700 cursor-pointer hover:bg-red-800 active:scale-95'
       } text-black
       dark:text-white  shadow-md`}
           >
@@ -76,8 +76,8 @@ const Movies = () => {
 
           <button
             onClick={() => newPage(page + 1)}
-            className="px-4 py-2 rounded-lg font-medium bg-purple-700
-               hover:bg-purple-800 active:scale-95 text-black cursor-pointer
+            className="px-4 py-2 rounded-lg font-medium bg-red-700
+               hover:bg-red-800 active:scale-95 text-black cursor-pointer
                dark:text-white shadow-md transition-all duration-200"
           >
             {t('next')}

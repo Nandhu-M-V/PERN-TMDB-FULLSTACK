@@ -4,7 +4,7 @@
   z-index: 20;
   border-radius: 10%;
   aspect-ratio: 0.75;
-  --c: no-repeat linear-gradient(#7729d7 0 0);
+  --c: no-repeat linear-gradient(#d72929 0 0);
   background:
     var(--c) 0% 50%,
     var(--c) 50% 50%,

@@ -22,7 +22,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={() => setDark(!dark)}
-      className={`px-4 py-3 cursor-pointer rounded-md text-white ${dark ? 'bg-purple-900' : 'bg-purple-700'}`}
+      className={`px-4 py-3 cursor-pointer rounded-md text-white ${dark ? 'bg-red-900' : 'bg-red-700'}`}
     >
       <FaMoon />
     </button>

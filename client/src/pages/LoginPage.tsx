@@ -5,48 +5,38 @@ import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const { setUser } = useAuth();
+  const navigate = useNavigate();
 
+  const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const navigate = useNavigate();
-
-  const handleLogin = async () => {
+  const handleSubmit = async () => {
     try {
       setError('');
 
-      const data = await login(email, password);
+      const data = isLogin
+        ? await login(email, password)
+        : await register(email, password);
 
       setUser(data.user);
+
+      console.log('Auth data:', data);
 
       navigate('/');
-      console.log('Logged data:', data);
-    } catch (err: unknown) {
-      console.error(err);
-      setError('Login failed');
-    }
-  };
-
-  const handleRegister = async () => {
-    try {
-      setError('');
-
-      const data = await register(email, password);
-
-      setUser(data.user);
-
-      console.log('Registered:', data.user);
     } catch (err) {
       console.error(err);
-      setError('Register failed');
+      setError(isLogin ? 'Login failed' : 'Register failed');
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen dark:bg-black bg-gray-100">
-      <div className="w-full max-w-md p-8 bg-purple-500/70 rounded-xl shadow-md">
-        <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
+    <div className="flex items-center justify-center min-h-screen dark:bg-black bg-red-300">
+      <div className="w-full max-w-md p-8 bg-red-500/70 rounded-xl shadow-md">
+        <h2 className="text-2xl font-bold text-center mb-6">
+          {isLogin ? 'Login' : 'Register'}
+        </h2>
 
         {error && (
           <p className="text-red-500 text-sm mb-4 text-center">{error}</p>
@@ -57,7 +47,7 @@ const LoginPage = () => {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full mb-4 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full mb-4 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-700"
         />
 
         <input
@@ -65,24 +55,25 @@ const LoginPage = () => {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full mb-6 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full mb-6 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-700"
         />
 
-        <div className="flex gap-3">
-          <button
-            onClick={handleLogin}
-            className="flex-1 bg-purple-800  border-white border  py-2 rounded-lg hover:bg-blue-700 transition"
-          >
-            Login
-          </button>
+        <button
+          onClick={handleSubmit}
+          className="w-full bg-red-800 border-white border py-2 rounded-lg hover:bg-red-900 transition"
+        >
+          {isLogin ? 'Login' : 'Register'}
+        </button>
 
+        <p className="text-center mt-4 text-sm">
+          {isLogin ? "Don't have an account?" : 'Already have an account?'}
           <button
-            onClick={handleRegister}
-            className="flex-1 bg-white text-black border-black hover:border-white border hover:text-white  py-2 rounded-lg hover:bg-purple-800 transition"
+            onClick={() => setIsLogin(!isLogin)}
+            className="ml-2 text-red-900 font-semibold hover:underline"
           >
-            Register
+            {isLogin ? 'Register' : 'Login'}
           </button>
-        </div>
+        </p>
       </div>
     </div>
   );

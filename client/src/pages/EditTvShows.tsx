@@ -115,7 +115,7 @@ const EditTvShow = () => {
   return (
     <div className="min-h-screen bg-gray-300 dark:bg-black text-black dark:text-white flex justify-center pt-28 px-6">
       <div className="w-full max-w-2xl space-y-6">
-        <h1 className="text-3xl font-bold text-purple-600">Edit TV Show</h1>
+        <h1 className="text-3xl font-bold text-red-600">Edit TV Show</h1>
 
         <form
           onSubmit={(e) => {
@@ -136,7 +136,7 @@ const EditTvShow = () => {
                 setTitle(e.target.value);
                 setErrors((prev) => ({ ...prev, title: '' }));
               }}
-              className="p-3 w-full rounded border border-black dark:border-purple-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="p-3 w-full rounded border border-black dark:border-red-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500"
             />
             {errors.title && (
               <p className="text-red-500 text-sm">{errors.title}</p>
@@ -155,7 +155,7 @@ const EditTvShow = () => {
                 setOverview(e.target.value);
                 setErrors((prev) => ({ ...prev, overview: '' }));
               }}
-              className="p-3 w-full rounded border border-black dark:border-purple-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="p-3 w-full rounded border border-black dark:border-red-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500"
             />
             {errors.overview && (
               <p className="text-red-500 text-sm">{errors.overview}</p>
@@ -171,7 +171,7 @@ const EditTvShow = () => {
               type="text"
               value={tagline}
               onChange={(e) => setTagline(e.target.value)}
-              className="p-3 w-full rounded border border-black dark:border-purple-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="p-3 w-full rounded border border-black dark:border-red-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>
 
@@ -187,7 +187,7 @@ const EditTvShow = () => {
                 setReleaseDate(e.target.value);
                 setErrors((prev) => ({ ...prev, release_date: '' }));
               }}
-              className="p-3 w-full rounded border border-black dark:border-purple-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="p-3 w-full rounded border border-black dark:border-red-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500"
             />
             {errors.release_date && (
               <p className="text-red-500 text-sm">{errors.first_air_date}</p>
@@ -207,7 +207,7 @@ const EditTvShow = () => {
                 setVote(Number(e.target.value));
                 setErrors((prev) => ({ ...prev, vote_average: '' }));
               }}
-              className="p-3 w-full rounded border border-black dark:border-purple-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="p-3 w-full rounded border border-black dark:border-red-500 bg-gray-200 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500"
             />
             {errors.vote_average && (
               <p className="text-red-500 text-sm">{errors.vote_average}</p>
@@ -216,7 +216,7 @@ const EditTvShow = () => {
 
           <button
             type="submit"
-            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition duration-200"
+            className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition duration-200"
           >
             Save Changes
           </button>

@@ -7,9 +7,9 @@ const NotFound = () => {
     <div className="h-50 m-40">
       <h1 className="text-7xl">404 - Page Not Found</h1>
       <button
-        className="w-fit bg-purple-700 text-left px-4 py-2
-                   hover:bg-purple-200 hover:text-purple-700
-                   transition rounded-md border-purple-900"
+        className="w-fit bg-red-700 text-left px-4 py-2
+                   hover:bg-red-200 hover:text-red-700
+                   transition rounded-md border-red-900"
         onClick={() => navigate('/')}
       >
         Go Home

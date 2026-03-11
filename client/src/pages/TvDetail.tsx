@@ -127,7 +127,7 @@ const TvDetail = () => {
   const year = show.release_date?.split('-')[0];
 
   return (
-    <div className="text-white bg-purple-400/50 dark:bg-gray-950 pt-20 min-h-screen relative">
+    <div className="text-white bg-red-400/50 dark:bg-gray-950 pt-20 min-h-screen relative">
       <div
         className="relative h-[70vh]  bg-cover bg-top"
         style={{
@@ -182,7 +182,7 @@ const TvDetail = () => {
               }
               navigate(`/tvshow/edit/${show.id}`);
             }}
-            className={`absolute bottom-0 cursor-pointer right-0 bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-md text-sm font-semibold transition ${roles && roles.includes('Admin') ? '' : 'hidden'}`}
+            className={`absolute bottom-0 cursor-pointer right-0 bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md text-sm font-semibold transition ${roles && roles.includes('Admin') ? '' : 'hidden'}`}
           >
             Edit Show
           </button>
@@ -217,7 +217,7 @@ const TvDetail = () => {
       </div>
 
       <div className="px-6 md:px-16 mt-16 pb-20">
-        <h2 className="text-2xl text-purple-700 font-bold mb-6">
+        <h2 className="text-2xl text-red-700 font-bold mb-6">
           Trending Tvshows
         </h2>
 

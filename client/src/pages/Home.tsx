@@ -3,7 +3,7 @@ import { fetchTvShows } from '@/features/Tvshows/tvshowSlice';
 import type { AppDispatch, RootState } from '../app/store';
 import HomeBanner from '@/components/HomeBanner';
 import Loading from '@/components/Loading';
-// import { useAuth } from '@/context/useAuth';
+import { useAuth } from '@/context/useAuth';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import HomeCards from '@/components/Homecards';
@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  //   const { user, setUser } = useAuth();
+  const { user } = useAuth();
 
   const { t } = useTranslation();
   const IMAGE_BANNER_URL = 'https://image.tmdb.org/t/p/original';
@@ -28,7 +28,7 @@ const Home = () => {
     (state: RootState) => state.tvshow
   );
 
-  const roles = ['Admin']; // Replace with actual role fetching logic
+  const roles = user?.role;
 
   //   useEffect(() => {
   //     if (user) {
@@ -36,7 +36,7 @@ const Home = () => {
   //     }
   //   }, [user]);
 
-  const name = t('guest');
+  const name = user?.email;
 
   useEffect(() => {
     if (status === 'idle' || tvstatus === 'idle') {
@@ -55,16 +55,16 @@ const Home = () => {
 
   return (
     <>
-      <div className=" min-h-screen pl-20 pb-5 text-white">
-        <div className="dark:hidden bg-purple-300/30 w-full left-0 -z-9 top-190 absolute h-full" />
-        <h1 className="absolute z-20 top-30 lg:left-30 font-bold text-2xl md:text-4xl lg:text-6xl text-purple-200">
+      <div className=" min-h-screen pl-10  text-white">
+        <div className="dark:hidden bg-red-300/30 w-full left-0 -z-9 top-190 absolute h-full" />
+        <h1 className="absolute z-20 top-30 lg:left-30 font-bold text-2xl md:text-4xl lg:text-6xl text-red-200">
           <label className="t-shadow">{t('welcomeUser')}</label>
           <div className="t-shadow">
-            {roles && roles.includes('Admin')
-              ? `Admin ${name.split('@')[0].toUpperCase()} `
-              : name.includes('@')
+            {roles && roles.includes('admin')
+              ? `Admin ${name?.split('@')[0].toUpperCase()} `
+              : name?.includes('@')
                 ? name.split('@')[0].toUpperCase()
-                : name.toUpperCase()}
+                : 'Guest'}
             !
           </div>
         </h1>
@@ -110,7 +110,7 @@ const Home = () => {
         </div>
         <div className="absolute z-10 top-194 pointer-events-none inset-0 bg-linear-to-b from-black/70 via-black/30 to-transparent" />
 
-        <h2 className=" font-extrabold py-4 text-purple-900 text-4xl">
+        <h2 className=" font-extrabold py-4 text-red-900 text-4xl">
           {' '}
           {t('topTvShows')}
         </h2>

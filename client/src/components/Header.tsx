@@ -7,6 +7,7 @@ import { useAuth } from '@/context/useAuth';
 import { useEffect, useRef, useState } from 'react';
 import ThemeToggle from './DarkMode';
 import LanguageSwitcher from './LangSwitch';
+import { toast } from 'react-toastify';
 const Header = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -22,11 +23,13 @@ const Header = () => {
   const dropdownRef = useRef<HTMLLIElement>(null);
   const mobileRef = useRef<HTMLDivElement>(null);
 
+  const allowedPaths = ['/movies/discover', '/tvshow/discover', '/'];
+
   const handleAddMedia = () => {
     if (user?.role === 'admin') {
       navigate('/media/add');
     } else {
-      alert('Only an Admin can add Media ');
+      toast.error('Only an Admin can add Media ');
     }
   };
 
@@ -44,6 +47,18 @@ const Header = () => {
       setMobileOpen(false);
       setOpen(false);
     }, 0);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (
+      location.pathname.includes('media/add') ||
+      location.pathname.includes('login') ||
+      location.pathname.includes('filter')
+    ) {
+      setTimeout(() => {
+        setShowSearch(true);
+      }, 0);
+    }
   }, [location.pathname]);
 
   useEffect(() => {
@@ -75,8 +90,8 @@ const Header = () => {
     <header
       style={{ transform: `translateY(-${offset}px)` }}
       className="fixed w-full top-0 px-3 bg-red-400/50 dark:bg-gray-600/50
-      border-b border-red-700 z-50 backdrop-blur-lg
-      transition-transform duration-75"
+        border-b border-red-700 z-50 backdrop-blur-lg
+        transition-transform duration-75 "
     >
       <nav className="w-full flex justify-start items-center h-20 dark:text-white relative">
         <div className="flex gap-5 min-w-1/2">
@@ -104,9 +119,9 @@ const Header = () => {
 
           <ul className="flex [@media(max-width:1030px)]:hidden gap-2 text-lg font-semibold">
             <li
-              className={`cursor-pointer p-2 px-3 rounded-2xl   transition hover:bg-red-200 hover:text-red-700 ${
+              className={`cursor-pointer p-2 px-3 rounded-md   transition hover:bg-white hover:text-red-700 ${
                 location.pathname === '/movies/discover'
-                  ? 'bg-red-200 text-red-700 border border-red-700'
+                  ? 'bg-white/90 text-red-700 border border-red-700'
                   : 'border border-white/0'
               }`}
               onClick={() => navigate('/movies/discover')}
@@ -115,9 +130,9 @@ const Header = () => {
             </li>
 
             <li
-              className={`cursor-pointer p-2 px-3 rounded-2xl transition hover:bg-red-200 hover:text-red-700 ${
+              className={`cursor-pointer p-2 px-3 rounded-md transition hover:bg-white hover:text-red-700 ${
                 location.pathname === '/tvshow/discover'
-                  ? 'bg-red-200 text-red-700 border border-red-700'
+                  ? 'bg-white/90 text-red-700 border border-red-700'
                   : ''
               }`}
               onClick={() => navigate('/tvshow/discover')}
@@ -125,22 +140,24 @@ const Header = () => {
               {t('tvShows')}
             </li>
 
-            <li ref={dropdownRef} className="relative">
-              <div
-                onClick={() => setOpen((prev) => !prev)}
-                className="cursor-pointer p-2 px-3 rounded-2xl transition hover:bg-red-200 hover:text-red-700"
-              >
+            <li
+              ref={dropdownRef}
+              className="relative"
+              onMouseEnter={() => setOpen(true)}
+              onMouseLeave={() => setOpen(false)}
+            >
+              <div className="cursor-pointer p-2 px-3 rounded-md transition hover:bg-white hover:text-red-700">
                 {t('more')}
               </div>
 
               {open && (
-                <div className="absolute left-0 mt-2 w-40 bg-red-700 p-0.5 border-b border-red-950 shadow-lg rounded-md z-50">
+                <div className="absolute left-0  w-40 bg-red-700 p-0.5 border-b border-red-950 shadow-lg rounded-md z-20">
                   <button
                     onClick={() => {
                       navigate('/filter');
                       setOpen(false);
                     }}
-                    className="w-full cursor-pointer text-left px-4 py-2 rounded-sm bg-red-600 border-b border-red-950 hover:bg-red-200 hover:text-red-700 transition"
+                    className="w-full cursor-pointer text-left px-4 py-2 rounded-t-sm border-b border-red-950 hover:bg-white hover:text-red-700 transition"
                   >
                     {t('filter')}
                   </button>
@@ -148,12 +165,11 @@ const Header = () => {
                   <button
                     onClick={() => {
                       handleAddMedia();
-
                       setOpen(false);
                     }}
-                    className="w-full cursor-pointer text-left px-4 py-2 rounded-sm border-b border-black bg-red-600  hover:bg-red-200 hover:text-red-700 transition"
+                    className="w-full cursor-pointer text-left px-4 py-2 rounded-b-sm hover:bg-white hover:text-red-700 transition"
                   >
-                    {/* {t('filter')} */} Add Media
+                    Add Media
                   </button>
                 </div>
               )}
@@ -162,7 +178,7 @@ const Header = () => {
 
           <div
             ref={mobileRef}
-            className={`absolute top-20 left-0 w-full rounded-lg bg-red-700 text-white shadow-lg [@media(max-width:1030px)]:block hidden z-40 transition-all duration-300 ${
+            className={`absolute top-20 left-0 w-full rounded-b-lg bg-red-700 text-white shadow-lg [@media(max-width:1030px)]:block hidden z-40 transition-all duration-300 ${
               mobileOpen
                 ? 'translate-y-0 opacity-100'
                 : '-translate-y-5 opacity-0 pointer-events-none'
@@ -214,9 +230,17 @@ const Header = () => {
 
         <div className="flex items-center justify-end pl-20 gap-2 min-w-1/2 [@media(max-width:640px)]:w-auto">
           <button
-            onClick={() => setShowSearch((prev) => !prev)}
-            className={`text-2xl cursor-pointer rounded-2xl px-4 py-3 hover:text-red-500 hover:bg-red-200 ${
-              showSearch ? 'text-red-800 border border-red-700 bg-red-200' : ''
+            onClick={() => {
+              if (
+                allowedPaths.includes(location.pathname) ||
+                location.pathname.includes('/movie/') ||
+                location.pathname.includes('/tv/')
+              ) {
+                setShowSearch((prev) => !prev);
+              }
+            }}
+            className={`text-2xl cursor-pointer rounded-2xl px-4 py-3 hover:text-red-500 hover:bg-white ${
+              showSearch ? 'text-red-800 border border-red-700 bg-gray-200' : ''
             }`}
           >
             <FaSearch />
@@ -224,17 +248,13 @@ const Header = () => {
 
           <LanguageSwitcher />
 
-          {/* {error && <div className="text-red-700">{t('authError')}</div>}
-
-          {isLoading ? (
-            <span className="loader"></span>
-          ) : (
-            <div className="rounded-md shadow-black hover:bg-red-800 text-gray-300 hover:text-white font-bold bg-red-700 px-3 py-2">
-              {isAuthenticated ? <LogoutButton /> : <LoginButton />}
-            </div>
-          )} */}
           {user ? (
-            <div className="rounded-md shadow-black hover:bg-red-800 text-gray-300 hover:text-white font-bold bg-red-700 px-3 py-2">
+            <div
+              className="rounded-md shadow-xs shadow-black
+            bg-red-700 text-gray-200 font-bold
+            px-3 py-2.5 hover:bg-red-800 text-sm cursor-pointer
+            focus:outline-none focus:ring-2 focus:ring-red-500"
+            >
               <button
                 onClick={() => {
                   localStorage.removeItem('user');
@@ -245,7 +265,12 @@ const Header = () => {
               </button>
             </div>
           ) : (
-            <div className="rounded-md shadow-black hover:bg-red-800 text-gray-300 hover:text-white font-bold bg-red-700 px-3 py-2">
+            <div
+              className="rounded-md shadow-xs shadow-black
+            bg-red-700 text-gray-200 font-bold
+            px-3 py-2.5 hover:bg-red-800 text-sm cursor-pointer
+            focus:outline-none focus:ring-2 focus:ring-red-500"
+            >
               <button onClick={() => navigate('login')}>Login</button>
             </div>
           )}

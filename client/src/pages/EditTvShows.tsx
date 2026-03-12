@@ -5,6 +5,9 @@ import type { AppDispatch } from '../app/store';
 import { useDispatch } from 'react-redux';
 import { fetchTvShows } from '@/features/Tvshows/tvshowSlice';
 import { useAuth } from '@/context/useAuth';
+import { toast } from 'react-toastify';
+import { ConfirmDialog } from '@/components/Confirm';
+import { Button } from '@/components/ui/button';
 
 const EditTvShow = () => {
   const { id } = useParams<{ id: string }>();
@@ -55,7 +58,8 @@ const EditTvShow = () => {
         setVote(data.vote_average);
         setReleaseDate(data.release_date?.split('T')[0]?.toString() ?? '');
       } catch (err) {
-        alert(`TV Show not found ${err}`);
+        toast.error(`Only an Admin can edit Media ${err}`);
+
         navigate('/tvshow/discover');
       }
     };
@@ -78,7 +82,8 @@ const EditTvShow = () => {
 
   const handleSubmit = async () => {
     if (role != 'admin') {
-      alert('Only admin can edit movies!!');
+      toast.error('Only an Admin can edit Media ');
+
       return;
     }
     if (!tv || !validate()) return;
@@ -102,7 +107,8 @@ const EditTvShow = () => {
       );
 
       if (!response.ok) {
-        alert('Failed to update TV show');
+        toast.error('Failed to update Tvshow ');
+
         return;
       }
 
@@ -111,14 +117,11 @@ const EditTvShow = () => {
       navigate(`/tv/${showId}/${slugify(data.title)}`);
     } catch (err) {
       console.error(err);
-      alert('Something went wrong updating the TV show.');
+      toast.error('Something went wrong... ');
     }
   };
 
-  if (!tv)
-    return (
-      <div className="text-white p-10">TV Show not found in local storage</div>
-    );
+  if (!tv) return <div className="text-white p-10">TV Show not found</div>;
 
   return (
     <div className="min-h-screen bg-gray-300 dark:bg-black text-black dark:text-white flex justify-center pt-28 px-6">
@@ -222,12 +225,30 @@ const EditTvShow = () => {
             )}
           </div>
 
-          <button
-            type="submit"
-            className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition duration-200"
-          >
-            Save Changes
-          </button>
+          {role && role.includes('admin') && (
+            <div className="">
+              <ConfirmDialog
+                title="Are you sure you want to edit this tvshow?"
+                description="This action cannot be undone."
+                actionText="Submit"
+                trigger={
+                  <Button className="w-full h-full bg-red-600 justify-center flex hover:bg-red-700 text-white  py-3 rounded-lg transition duration-200">
+                    Save Changes
+                  </Button>
+                }
+                onConfirm={async () => {
+                  if (!id) return;
+
+                  try {
+                    handleSubmit();
+                    toast.success('Tvshow Edited successfully');
+                  } catch (error) {
+                    toast.error(`Failed to delete movie ${error}`);
+                  }
+                }}
+              />
+            </div>
+          )}
         </form>
       </div>
     </div>

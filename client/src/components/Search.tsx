@@ -142,7 +142,11 @@ const Search = ({ autoFocus }: SearchProps) => {
             >
               {item.poster_path && (
                 <img
-                  src={`https://image.tmdb.org/t/p/w92${item.poster_path}`}
+                  src={
+                    item.poster_path.includes('uploads')
+                      ? `http://localhost:5000${item.poster_path}`
+                      : `https://image.tmdb.org/t/p/w92${item.poster_path}`
+                  }
                   alt={item.title || item.name}
                   className="w-12 rounded-md"
                 />

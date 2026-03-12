@@ -5,6 +5,9 @@ import type { MovieDetailType } from './MovieDetails';
 import { fetchMovies } from '@/features/movies/movieSlice';
 import { useDispatch } from 'react-redux';
 import { useAuth } from '@/context/useAuth';
+import { toast } from 'react-toastify';
+import { ConfirmDialog } from '@/components/Confirm';
+import { Button } from '@/components/ui/button';
 
 const EditMovie = () => {
   const { id } = useParams<{ id: string }>();
@@ -41,7 +44,9 @@ const EditMovie = () => {
         setVote(data.vote_average);
         setReleaseDate(data.release_date.split('T')[0]);
       } catch (err) {
-        alert(`Movie not found! ${err instanceof Error ? err.message : ''}`);
+        toast.error(
+          `Movie not Found ${err instanceof Error ? err.message : ''}`
+        );
         navigate('/movies/discover');
       }
     };
@@ -77,7 +82,8 @@ const EditMovie = () => {
 
   const handleSubmit = async () => {
     if (role != 'admin') {
-      alert('Only admin can edit movies!!');
+      toast.error('Only an Admin can edit Media ');
+
       return;
     }
 
@@ -103,7 +109,7 @@ const EditMovie = () => {
 
       if (!response.ok) {
         const errData = await response.json().catch(() => ({}));
-        alert(errData.error || 'Failed to update movie');
+        toast.error(errData.error || 'Failed to update movie');
         return;
       }
 
@@ -113,14 +119,11 @@ const EditMovie = () => {
       navigate(`/movie/${movieId}/${slugify(data.title)}`);
     } catch (err) {
       console.error(err);
-      alert('Something went wrong while updating the movie.');
+      toast.error('Something went wrong while updating the movie.');
     }
   };
 
-  if (!movie)
-    return (
-      <div className="text-white p-10">Movie not found in local storage</div>
-    );
+  if (!movie) return <div className="text-white p-10">Movie not found</div>;
 
   return (
     <div className="min-h-screen bg-gray-300 dark:bg-black text-black dark:text-white flex justify-center pt-28 px-6">
@@ -205,12 +208,30 @@ const EditMovie = () => {
           )}
         </div>
 
-        <button
-          onClick={handleSubmit}
-          className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition duration-200"
-        >
-          Save Changes
-        </button>
+        {role && role.includes('admin') && (
+          <div className="">
+            <ConfirmDialog
+              title="Are you sure you want to edit this movie?"
+              description="This action cannot be undone."
+              actionText="Submit"
+              trigger={
+                <Button className="w-full h-full bg-red-600 justify-center flex hover:bg-red-700 text-white  py-3 rounded-lg transition duration-200">
+                  Save Changes
+                </Button>
+              }
+              onConfirm={async () => {
+                if (!id) return;
+
+                try {
+                  handleSubmit();
+                  toast.success('Movie Edited successfully');
+                } catch (error) {
+                  toast.error(`Failed to delete movie ${error}`);
+                }
+              }}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

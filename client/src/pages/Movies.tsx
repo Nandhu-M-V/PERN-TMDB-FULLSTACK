@@ -33,7 +33,7 @@ const Movies = () => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="dark:bg-black bg-red-300/70 pb-5 min-h-screen transition-all duration-200 text-white">
+    <div className="dark:bg-black bg-gray-100/90 pb-5 min-h-screen transition-all duration-200 text-white">
       <div className="absolute top-180 inset-0 bg-linear-to-b from-black/40 via-black/10 to-transparent" />
 
       <Carousal movies={movies} />

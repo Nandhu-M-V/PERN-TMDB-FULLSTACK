@@ -4,11 +4,11 @@ import { pool } from "../config/db.js";
 export const getMovies = async (req: Request, res: Response) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
-    const limit = 20;
+    const limit = 30;
     const offset = (page - 1) * limit;
 
     const result = await pool.query(
-      "SELECT * FROM movies ORDER BY release_date DESC LIMIT $1 OFFSET $2",
+      "SELECT * FROM movies ORDER BY updated_at DESC LIMIT $1 OFFSET $2",
       [limit, offset],
     );
 

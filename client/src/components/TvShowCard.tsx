@@ -1,6 +1,6 @@
 export interface BaseMedia {
   id: number;
-  tmdb_id?: number;
+  tmdb_id?: number | string;
   title?: string;
   name?: string;
   poster_path: string | null;

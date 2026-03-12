@@ -32,18 +32,20 @@ export default function Carousal({ movies }: CarousalProps) {
       <CarouselContent>
         {movies.map((movie) => (
           <CarouselItem key={movie.id}>
-            <div className="relative h-195 rounded-md w-full overflow-hidden">
+            <div className="relative h-195 w-full overflow-hidden">
               <img
                 src={
                   movie.backdrop_path
-                    ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
+                    ? !movie.backdrop_path.includes('uploads')
+                      ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
+                      : `http://localhost:5000${movie.backdrop_path}`
                     : defimg
                 }
                 className="w-full h-full object-cover"
                 alt={movie.title || movie.name}
               />
 
-              <div className="absolute inset-0 dark:bg-linear-to-t from-black via-black/50 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black via-black/50 to-transparent" />
 
               <div className="absolute bottom-40 max-w-300 left-10 text-white">
                 <h2 className="text-8xl cursor-default  text-gray-200 font-bold">
@@ -53,7 +55,7 @@ export default function Carousal({ movies }: CarousalProps) {
                 </h2>
               </div>
               <div className="absolute bottom-15 max-w-400 left-10 text-white">
-                <h2 className="pl-2 cursor-default text-md text-gray-400">
+                <h2 className="pl-2 cursor-default text-md text-white-400">
                   {movie?.overview ? movie.overview?.slice(0, 400) + '...' : ''}
                 </h2>
               </div>

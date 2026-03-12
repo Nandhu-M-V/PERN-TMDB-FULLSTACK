@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { searchMediaService } from "../services/searchh.service.ts";
+import { searchMediaService } from "../services/search.service.ts";
 
 export const searchMedia = async (req: Request, res: Response) => {
   try {

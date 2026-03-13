@@ -5,7 +5,7 @@ import Search from './Search';
 import './styles/styles.css';
 import { useAuth } from '@/context/useAuth';
 import { useEffect, useRef, useState } from 'react';
-import ThemeToggle from './DarkMode';
+import ThemeToggle from './Themes';
 import LanguageSwitcher from './LangSwitch';
 import { toast } from 'react-toastify';
 const Header = () => {
@@ -19,6 +19,8 @@ const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(true);
   const [offset, setOffset] = useState(0);
+
+  const [themeMenuOpen, setThemeMenuOpen] = useState(false);
 
   const dropdownRef = useRef<HTMLLIElement>(null);
   const mobileRef = useRef<HTMLDivElement>(null);
@@ -53,13 +55,14 @@ const Header = () => {
     if (
       location.pathname.includes('media/add') ||
       location.pathname.includes('login') ||
-      location.pathname.includes('filter')
+      location.pathname.includes('filter') ||
+      themeMenuOpen
     ) {
       setTimeout(() => {
         setShowSearch(true);
       }, 0);
     }
-  }, [location.pathname]);
+  }, [location.pathname, themeMenuOpen]);
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? 'hidden' : 'auto';
@@ -89,20 +92,20 @@ const Header = () => {
   return (
     <header
       style={{ transform: `translateY(-${offset}px)` }}
-      className="fixed w-full top-0 px-3 bg-red-400/50 dark:bg-gray-600/50
-        border-b border-red-700 z-50 backdrop-blur-lg
+      className="fixed w-full top-0 px-3 bg-primary/90 dark:bg-gray-600/50
+        border-b border-primary z-50 backdrop-blur-lg
         transition-transform duration-75 "
     >
       <nav className="w-full flex justify-start items-center h-20 dark:text-white relative">
         <div className="flex gap-5 min-w-1/2">
           <h1
-            className="text-4xl font-extrabold [@media(max-width:640px)]:hidden text-white dark:text-red-700 hover:scale-105 hover:text-red-600 cursor-pointer"
+            className="text-4xl font-extrabold [@media(max-width:640px)]:hidden text-white dark:text-primary hover:scale-105 hover:text-foreground cursor-pointer"
             onClick={() => navigate('/')}
           >
             FlixNova
           </h1>
           <h1
-            className="text-4xl font-extrabold [@media(max-width:640px)]:block hidden  text-red-700 hover:scale-105 hover:text-red-600 cursor-pointer"
+            className="text-4xl font-extrabold [@media(max-width:640px)]:block hidden  text-background hover:scale-105 hover:text-red-600 cursor-pointer"
             onClick={() => navigate('/')}
           >
             FN
@@ -119,9 +122,9 @@ const Header = () => {
 
           <ul className="flex [@media(max-width:1030px)]:hidden gap-2 text-lg font-semibold">
             <li
-              className={`cursor-pointer p-2 px-3 rounded-md   transition hover:bg-white hover:text-red-700 ${
+              className={`cursor-pointer p-2 px-3 rounded-md text-background transition hover:bg-white hover:text-black ${
                 location.pathname === '/movies/discover'
-                  ? 'bg-white/90 text-red-700 border border-red-700'
+                  ? 'bg-white/90 text-black border border-primary'
                   : 'border border-white/0'
               }`}
               onClick={() => navigate('/movies/discover')}
@@ -130,9 +133,9 @@ const Header = () => {
             </li>
 
             <li
-              className={`cursor-pointer p-2 px-3 rounded-md transition hover:bg-white hover:text-red-700 ${
+              className={`cursor-pointer p-2 px-3 rounded-md transition text-background hover:bg-white hover:text-black ${
                 location.pathname === '/tvshow/discover'
-                  ? 'bg-white/90 text-red-700 border border-red-700'
+                  ? 'bg-white/90 text-black border border-primary'
                   : ''
               }`}
               onClick={() => navigate('/tvshow/discover')}
@@ -146,28 +149,28 @@ const Header = () => {
               onMouseEnter={() => setOpen(true)}
               onMouseLeave={() => setOpen(false)}
             >
-              <div className="cursor-pointer p-2 px-3 rounded-md transition hover:bg-white hover:text-red-700">
+              <div className="cursor-pointer p-2 px-3 rounded-md text-background transition hover:bg-white hover:text-black">
                 {t('more')}
               </div>
 
               {open && (
-                <div className="absolute left-0  w-40 bg-red-700 p-0.5 border-b border-red-950 shadow-lg rounded-md z-20">
-                  <button
+                <div className="absolute left-0  w-40 bg-primary p-0.5 border-b text-black border-foreground shadow-lg rounded-md z-20">
+                  {/* <button
                     onClick={() => {
                       navigate('/filter');
                       setOpen(false);
                     }}
-                    className="w-full cursor-pointer text-left px-4 py-2 rounded-t-sm border-b border-red-950 hover:bg-white hover:text-red-700 transition"
+                    className="w-full cursor-pointer text-left px-4 py-2 rounded-t-sm border-b border-red-950 hover:bg-white hover:text-primary transition"
                   >
                     {t('filter')}
-                  </button>
+                  </button> */}
 
                   <button
                     onClick={() => {
                       handleAddMedia();
                       setOpen(false);
                     }}
-                    className="w-full cursor-pointer text-left px-4 py-2 rounded-b-sm hover:bg-white hover:text-red-700 transition"
+                    className="w-full cursor-pointer text-left px-4 py-2 rounded-b-sm hover:bg-white hover:text-primary transition"
                   >
                     Add Media
                   </button>
@@ -178,15 +181,15 @@ const Header = () => {
 
           <div
             ref={mobileRef}
-            className={`absolute top-20 left-0 w-full rounded-b-lg bg-red-700 text-white shadow-lg [@media(max-width:1030px)]:block hidden z-40 transition-all duration-300 ${
+            className={`absolute top-20 left-0 w-full rounded-b-lg bg-primary text-white shadow-lg [@media(max-width:1030px)]:block hidden z-40 transition-all duration-300 ${
               mobileOpen
                 ? 'translate-y-0 opacity-100'
                 : '-translate-y-5 opacity-0 pointer-events-none'
             }`}
           >
-            <ul className="flex flex-col text-lg font-semibold">
+            <ul className="flex flex-col text-foreground text-lg font-semibold">
               <li
-                className="p-4 cursor-pointer rounded-md border-b border-red-600 hover:bg-red-800"
+                className="p-4 cursor-pointer rounded-md border-b hover:text-primary hover:bg-foreground"
                 onClick={() => {
                   navigate('/movies/discover');
                   setMobileOpen(false);
@@ -196,7 +199,7 @@ const Header = () => {
               </li>
 
               <li
-                className="p-4 cursor-pointer rounded-md border-b border-red-600 hover:bg-red-800"
+                className="p-4 cursor-pointer rounded-md border-b hover:text-primary hover:bg-foreground"
                 onClick={() => {
                   navigate('/tvshow/discover');
                   setMobileOpen(false);
@@ -205,18 +208,18 @@ const Header = () => {
                 {t('tvShows')}
               </li>
 
-              <li
-                className="p-4 cursor-pointer rounded-md border-b border-red-600 hover:bg-red-800"
+              {/* <li
+                className="p-4 cursor-pointer rounded-md border-b hover:text-primary hover:bg-foreground"
                 onClick={() => {
                   navigate('/filter');
                   setMobileOpen(false);
                 }}
               >
                 {t('filter')}
-              </li>
+              </li> */}
 
               <div
-                className="p-4 rounded-md hover:bg-red-800"
+                className="p-4 rounded-md hover:bg-foreground hover:text-primary"
                 onClick={() => {
                   handleAddMedia();
                   setMobileOpen(false);
@@ -239,8 +242,10 @@ const Header = () => {
                 setShowSearch((prev) => !prev);
               }
             }}
-            className={`text-2xl cursor-pointer rounded-2xl px-4 py-3 hover:text-red-500 hover:bg-white ${
-              showSearch ? 'text-red-800 border border-red-700 bg-gray-200' : ''
+            className={`text-2xl cursor-pointer bg-foreground shadow-xs shadow-black text-primary/50 rounded-md px-3 py-2.5 hover:text-primary hover:bg-white ${
+              showSearch
+                ? 'text-primary/90 border border-primary/20 bg-foreground'
+                : ''
             }`}
           >
             <FaSearch />
@@ -251,9 +256,9 @@ const Header = () => {
           {user ? (
             <div
               className="rounded-md shadow-xs shadow-black
-            bg-red-700 text-gray-200 font-bold
-            px-3 py-2.5 hover:bg-red-800 text-sm cursor-pointer
-            focus:outline-none focus:ring-2 focus:ring-red-500"
+            bg-primary text-foreground font-bold hover:text-primary
+            px-3 py-2.5 hover:bg-foreground text-sm cursor-pointer
+            focus:outline-none focus:ring-2 focus:ring-primary/50"
             >
               <button
                 onClick={() => {
@@ -267,15 +272,15 @@ const Header = () => {
           ) : (
             <div
               className="rounded-md shadow-xs shadow-black
-            bg-red-700 text-gray-200 font-bold
-            px-3 py-2.5 hover:bg-red-800 text-sm cursor-pointer
-            focus:outline-none focus:ring-2 focus:ring-red-500"
+            bg-primary text-foreground font-bold hover:text-primary
+            px-3 py-2.5 hover:bg-foreground text-sm cursor-pointer
+            focus:outline-none focus:ring-2 focus:ring-primary/50"
             >
               <button onClick={() => navigate('login')}>Login</button>
             </div>
           )}
 
-          <ThemeToggle />
+          <ThemeToggle onOpenChange={setThemeMenuOpen} />
         </div>
       </nav>
 

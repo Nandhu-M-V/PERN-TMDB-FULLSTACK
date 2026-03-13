@@ -7,12 +7,23 @@ import Loading from '@/components/Loading';
 import Carousal from '@/components/Carousal';
 import '../utils/i18n';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 
 const Movies = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { i18n, t } = useTranslation();
 
   const [page, setpage] = useState(1);
+
+  const [totalPages, setTotalPages] = useState(0);
+  const limit = 30;
+
+  useEffect(() => {
+    axios.get('http://localhost:5000/movies/count').then((res) => {
+      const totalRows = res.data.total;
+      setTotalPages(Math.ceil(totalRows / limit));
+    });
+  }, []);
 
   const { movies, loading, error, status } = useSelector(
     (state: RootState) => state.movie
@@ -33,7 +44,7 @@ const Movies = () => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="dark:bg-black bg-gray-100/90 pb-5 min-h-screen transition-all duration-200 text-white">
+    <div className=" bg-foreground pb-5 min-h-screen transition-all duration-200 text-white">
       <div className="absolute top-180 inset-0 bg-linear-to-b from-black/40 via-black/10 to-transparent" />
 
       <Carousal movies={movies} />
@@ -63,22 +74,28 @@ const Movies = () => {
       ${
         page === 1
           ? 'bg-gray-400 cursor-not-allowed opacity-60'
-          : 'bg-red-700 cursor-pointer hover:bg-red-800 active:scale-95'
+          : 'bg-primary cursor-pointer hover:bg-foreground active:scale-95'
       } text-black
       dark:text-white  shadow-md`}
           >
             {t('prev')}
           </button>
 
-          <span className="text-black cursor-default dark:text-white font-semibold">
-            Page {page}
+          <span className="text-white cursor-default dark:text-white font-semibold">
+            Page {page} / {totalPages}
           </span>
 
           <button
             onClick={() => newPage(page + 1)}
-            className="px-4 py-2 rounded-lg font-medium bg-red-700
-               hover:bg-red-800 active:scale-95 text-black cursor-pointer
-               dark:text-white shadow-md transition-all duration-200"
+            disabled={page === totalPages}
+            className={`px-4 py-2 rounded-lg font-medium bg-primary
+               hover:bg-red-800 active:scale-95
+               text-black
+               dark:text-white shadow-md transition-all duration-200 ${
+                 page === totalPages
+                   ? 'bg-gray-400 cursor-not-allowed opacity-60'
+                   : 'bg-primary cursor-pointer    hover:bg-red-800 active:scale-95'
+               }`}
           >
             {t('next')}
           </button>

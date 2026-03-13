@@ -126,12 +126,12 @@ const EditMovie = () => {
   if (!movie) return <div className="text-white p-10">Movie not found</div>;
 
   return (
-    <div className="min-h-screen bg-gray-300 dark:bg-black text-black dark:text-white flex justify-center pt-28 px-6">
+    <div className="min-h-screen bg-foreground/50  text-black dark:text-white flex justify-center pt-28 px-6">
       <div className="w-full max-w-2xl space-y-6">
-        <h1 className="text-3xl font-bold text-red-600">Edit Movie</h1>
+        <h1 className="text-3xl font-bold text-white">Edit Movie</h1>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="title" className="font-medium">
+          <label htmlFor="title" className="font-medium text-primary">
             Movie Title
           </label>
           <input
@@ -147,7 +147,7 @@ const EditMovie = () => {
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="overview" className="font-medium">
+          <label htmlFor="overview" className="font-medium text-primary">
             Movie Overview
           </label>
           <textarea
@@ -163,7 +163,7 @@ const EditMovie = () => {
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="tagline" className="font-medium">
+          <label htmlFor="tagline" className="font-medium text-primary">
             Movie Tagline
           </label>
           <input
@@ -176,7 +176,7 @@ const EditMovie = () => {
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="releaseDate" className="font-medium">
+          <label htmlFor="releaseDate" className="font-medium text-primary">
             Release Date
           </label>
           <input
@@ -192,7 +192,7 @@ const EditMovie = () => {
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="voteAverage" className="font-medium">
+          <label htmlFor="voteAverage" className="font-medium text-primary">
             Vote Average
           </label>
           <input
@@ -215,7 +215,7 @@ const EditMovie = () => {
               description="This action cannot be undone."
               actionText="Submit"
               trigger={
-                <Button className="w-full h-full bg-red-600 justify-center flex hover:bg-red-700 text-white  py-3 rounded-lg transition duration-200">
+                <Button className="w-full h-full bg-primary justify-center border flex hover:bg-foreground/70 hover:border-primary hover:text-primary text-pimary  py-3 rounded-lg transition duration-200">
                   Save Changes
                 </Button>
               }

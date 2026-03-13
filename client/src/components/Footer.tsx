@@ -6,7 +6,7 @@ const Footer = () => {
   const { t } = useTranslation();
 
   return (
-    <footer className="bg-red-900 border-t border-black overflow-hidden dark:bg-zinc-900 dark:text-gray-400 z-10">
+    <footer className="bg-primary border-t border-black overflow-hidden dark:bg-zinc-900 dark:text-gray-400 z-10">
       <div className="max-w-6xl mx-auto px-6 py-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
           <div>
@@ -23,19 +23,19 @@ const Footer = () => {
             <ul className="space-y-2">
               <li
                 onClick={() => navigate('/')}
-                className="hover:text-white transition cursor-pointer"
+                className="hover:font-bold transition cursor-pointer"
               >
                 {t('home')}
               </li>
               <li
                 onClick={() => navigate('/movies/discover')}
-                className="hover:text-white transition cursor-pointer"
+                className="hover:font-bold transition cursor-pointer"
               >
                 {t('discoverMovies')}
               </li>
               <li
                 onClick={() => navigate('/tvshow/discover')}
-                className="hover:text-white transition cursor-pointer"
+                className="hover:font-bold transition cursor-pointer"
               >
                 {t('topRatedTvshows')}
               </li>

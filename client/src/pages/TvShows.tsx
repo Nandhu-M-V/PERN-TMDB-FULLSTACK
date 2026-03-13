@@ -6,6 +6,7 @@ import Loading from '@/components/Loading';
 import TvShowCard from '@/components/TvShowCard';
 import Carousal from '@/components/Carousal';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 
 const TvShows = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,6 +16,20 @@ const TvShows = () => {
   const { tvShows, loading1, error1 } = useSelector(
     (state: RootState) => state.tvshow
   );
+
+  const [totalPages, setTotalPages] = useState(0);
+  const limit = 30;
+
+  useEffect(() => {
+    axios.get('http://localhost:5000/tv/count').then((res) => {
+      const totalRows = res.data.total;
+      setTotalPages(Math.ceil(totalRows / limit));
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log(totalPages);
+  }, [totalPages]);
 
   const [page, setpage] = useState(1);
 
@@ -33,7 +48,7 @@ const TvShows = () => {
   if (error1) return <p className="text-red-500">{error1}</p>;
 
   return (
-    <div className="dark:bg-black bg-gray-100/90 pb-5 min-h-screen transition-all duration-200 text-white">
+    <div className="bg-foreground pb-5 min-h-screen transition-all duration-200 text-white">
       <div className="absolute top-180 inset-0 bg-linear-to-b from-black/40 via-black/10 to-transparent" />
 
       <Carousal movies={tvShows} />
@@ -61,7 +76,7 @@ const TvShows = () => {
       ${
         page === 1
           ? 'bg-gray-400 cursor-not-allowed opacity-60'
-          : 'bg-red-700 cursor-pointer    hover:bg-red-800 active:scale-95'
+          : 'bg-primary cursor-pointer    hover:bg-red-800 active:scale-95'
       }
       text-black
       dark:text-white shadow-md`}
@@ -69,16 +84,21 @@ const TvShows = () => {
             {t('prev')}
           </button>
 
-          <span className="text-black cursor-default dark:text-white font-semibold">
-            Page {page}
+          <span className="text-white cursor-default dark:text-white font-semibold">
+            Page {page} / {totalPages}
           </span>
 
           <button
             onClick={() => newPage(page + 1)}
-            className="px-4 py-2 rounded-lg font-medium bg-red-700
+            disabled={page === totalPages}
+            className={`px-4 py-2 rounded-lg font-medium bg-primary
                hover:bg-red-800 active:scale-95
-               text-black cursor-pointer
-               dark:text-white shadow-md transition-all duration-200"
+               text-black
+               dark:text-white shadow-md transition-all duration-200 ${
+                 page === totalPages
+                   ? 'bg-gray-400 cursor-not-allowed opacity-60'
+                   : 'bg-primary cursor-pointer    hover:bg-red-800 active:scale-95'
+               }`}
           >
             {t('next')}
           </button>

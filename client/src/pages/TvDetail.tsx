@@ -139,21 +139,18 @@ const TvDetail = () => {
   const year = show.release_date?.split('-')[0];
 
   return (
-    <div className="text-white bg-gray-200/80 dark:bg-gray-950 pt-20 min-h-screen relative">
+    <div className="text-white bg-foreground dark:bg-gray-950 pt-20 min-h-screen relative">
       <div
         className="relative h-[70vh] bg-cover bg-top"
         style={{
           backgroundImage: `url(https://image.tmdb.org/t/p/original${show.backdrop_path})`,
         }}
       >
-        <div className="absolute inset-0 dark:bg-linear-to-t from-black via-black/30 to-transparent" />
-
         <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent dark:hidden" />
       </div>
 
       <div className="relative -mt-50 px-6 md:px-10 flex flex-col md:flex-row gap-10">
-        <div className="absolute top-50 z-0 inset-0 bg-linear-to-b from-black/70 via-black/30 to-transparent h-full dark:block hidden" />
-        <div className="absolute top-50 z-0 inset-0 bg-linear-to-b from-black/30 via-gray-300/30 to-transparent h-full dark:hidden" />
+        <div className="absolute top-50 z-0 inset-0 bg-linear-to-b from-black/60 via-black/30 to-transparent h-full dark:hidden" />
 
         <img
           src={posterUrl}
@@ -248,7 +245,7 @@ const TvDetail = () => {
               description="This action cannot be undone."
               actionText="Delete"
               trigger={
-                <Button className="bg-red-700 text-white hover:bg-red-800">
+                <Button className="bg-primary text-white hover:bg-red-800">
                   Delete Show
                 </Button>
               }
@@ -270,7 +267,7 @@ const TvDetail = () => {
       </div>
 
       <div className="px-7 pb-20">
-        <h2 className="text-3xl relative text-red-700 z-10 font-bold mb-6">
+        <h2 className="text-3xl relative text-primary z-10 font-bold mb-6">
           Trending TV Shows
         </h2>
 

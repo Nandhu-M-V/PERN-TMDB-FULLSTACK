@@ -47,7 +47,7 @@ const LoginPage = () => {
         </p>
 
         {error && (
-          <div className="bg-red-100 text-red-700 text-sm p-3 rounded-md mb-4 text-center">
+          <div className="bg-red-100 text-primary text-sm p-3 rounded-md mb-4 text-center">
             {error}
           </div>
         )}
@@ -94,7 +94,7 @@ const LoginPage = () => {
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-lg transition disabled:opacity-50"
+          className="w-full bg-red-600 hover:bg-primary text-white font-semibold py-2 rounded-lg transition disabled:opacity-50"
         >
           {loading ? 'Please wait...' : isLogin ? 'Login' : 'Register'}
         </button>

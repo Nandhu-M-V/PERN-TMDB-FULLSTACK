@@ -114,7 +114,7 @@ const AddMedia = () => {
       border border-gray-300 dark:border-gray-700
       rounded-3xl shadow-2xl p-10"
       >
-        <h1 className="text-4xl font-bold text-center mb-10 text-red-700 dark:text-red-400">
+        <h1 className="text-4xl font-bold text-center mb-10 text-black">
           Add New Media 🎬
         </h1>
 
@@ -155,7 +155,7 @@ const AddMedia = () => {
                   className="w-full border border-gray-300 dark:border-gray-700 rounded-lg p-3
                   bg-white text-gray-900
                   dark:bg-gray-800 dark:text-white
-                  focus:ring-2 focus:ring-red-500 outline-none"
+                  focus:ring-2 focus:primary outline-none"
                 />
 
                 {errors.title && (
@@ -175,7 +175,7 @@ const AddMedia = () => {
                   className="w-full border border-gray-300 dark:border-gray-700 rounded-lg p-3
                   bg-white text-gray-900
                   dark:bg-gray-800 dark:text-white
-                  focus:ring-2 focus:ring-red-500 outline-none"
+                  focus:ring-2 focus:primary outline-none"
                 />
 
                 {errors.tagline && (
@@ -196,7 +196,7 @@ const AddMedia = () => {
                   className="w-full border border-gray-300 dark:border-gray-700 rounded-lg p-3
                   bg-white text-gray-900
                   dark:bg-gray-800 dark:text-white
-                  focus:ring-2 focus:ring-red-500 outline-none"
+                  focus:ring-2 focus:primary outline-none"
                 />
               </div>
 
@@ -212,7 +212,7 @@ const AddMedia = () => {
                   className="w-full border border-gray-300 dark:border-gray-700 rounded-lg p-3
                   bg-white text-gray-900
                   dark:bg-gray-800 dark:text-white
-                  focus:ring-2 focus:ring-red-500 outline-none"
+                  focus:ring-2 focus:primary outline-none"
                 />
 
                 {errors.runtime && (
@@ -236,7 +236,7 @@ const AddMedia = () => {
                   className="w-full border border-gray-300 dark:border-gray-700 rounded-lg p-3
                   bg-white text-gray-900
                   dark:bg-gray-800 dark:text-white
-                  focus:ring-2 focus:ring-red-500 outline-none"
+                  focus:ring-2 focus:primary outline-none"
                 />
 
                 {errors.rating && (
@@ -260,7 +260,7 @@ const AddMedia = () => {
                   className="w-full border border-gray-300 dark:border-gray-700 rounded-lg p-3
                   bg-white text-gray-900
                   dark:bg-gray-800 dark:text-white
-                  focus:ring-2 focus:ring-red-500 outline-none"
+                  focus:ring-2 focus:primary outline-none"
                 />
 
                 {errors.overview && (
@@ -283,8 +283,8 @@ const AddMedia = () => {
                   className="block w-full text-sm
                   file:mr-4 file:py-2 file:px-4
                   file:rounded-lg file:border-0
-                  file:bg-red-600 file:text-white
-                  hover:file:bg-red-700"
+                  file:bg-primary file:text-black
+                  hover:file:bg-primary"
                 />
 
                 {errors.poster && (
@@ -311,7 +311,7 @@ const AddMedia = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 text-lg font-semibold bg-red-600 hover:bg-red-700 text-white rounded-xl transition disabled:opacity-50"
+            className="w-full py-3 text-lg font-semibold bg-foreground border hover:text-foreground hover:border-foreground hover:bg-primary text-white rounded-xl transition disabled:opacity-50"
           >
             {loading ? 'Adding Media...' : 'Add Media'}
           </button>

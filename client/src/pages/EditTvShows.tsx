@@ -232,7 +232,7 @@ const EditTvShow = () => {
                 description="This action cannot be undone."
                 actionText="Submit"
                 trigger={
-                  <Button className="w-full h-full bg-red-600 justify-center flex hover:bg-red-700 text-white  py-3 rounded-lg transition duration-200">
+                  <Button className="w-full h-full bg-red-600 justify-center flex hover:bg-primary text-white  py-3 rounded-lg transition duration-200">
                     Save Changes
                   </Button>
                 }

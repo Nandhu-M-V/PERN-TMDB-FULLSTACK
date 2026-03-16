@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { BaseMedia } from './TvShowCard';
+import { API_URL } from '@/environment_variables/env_constants';
 
 interface SearchProps {
   autoFocus?: boolean;
@@ -33,9 +34,7 @@ const Search = ({ autoFocus }: SearchProps) => {
       setLoading(true);
 
       const res = await fetch(
-        `http://localhost:5000/api/search?query=${encodeURIComponent(
-          searchQuery
-        )}`
+        `${API_URL}/api/search?query=${encodeURIComponent(searchQuery)}`
       );
 
       const data = await res.json();
@@ -144,7 +143,7 @@ const Search = ({ autoFocus }: SearchProps) => {
                 <img
                   src={
                     item.poster_path.includes('uploads')
-                      ? `http://localhost:5000${item.poster_path}`
+                      ? `${API_URL}${item.poster_path}`
                       : `https://image.tmdb.org/t/p/w92${item.poster_path}`
                   }
                   alt={item.title || item.name}

@@ -155,7 +155,7 @@ const Header = () => {
 
               {open && (
                 <div className="absolute left-0  w-40 bg-primary p-0.5 border-b text-black border-foreground shadow-lg rounded-md z-20">
-                  {/* <button
+                  <button
                     onClick={() => {
                       navigate('/filter');
                       setOpen(false);
@@ -163,7 +163,7 @@ const Header = () => {
                     className="w-full cursor-pointer text-left px-4 py-2 rounded-t-sm border-b border-red-950 hover:bg-white hover:text-primary transition"
                   >
                     {t('filter')}
-                  </button> */}
+                  </button>
 
                   <button
                     onClick={() => {
@@ -242,7 +242,7 @@ const Header = () => {
                 setShowSearch((prev) => !prev);
               }
             }}
-            className={`text-2xl cursor-pointer bg-foreground shadow-xs shadow-black text-primary/50 rounded-md px-3 py-2.5 hover:text-primary hover:bg-white ${
+            className={`text-2xl cursor-pointer bg-foreground shadow-xs shadow-black text-white rounded-md px-3 py-2 hover:text-primary hover:bg-white ${
               showSearch
                 ? 'text-primary/90 border border-primary/20 bg-foreground'
                 : ''
@@ -254,30 +254,30 @@ const Header = () => {
           <LanguageSwitcher />
 
           {user ? (
-            <div
+            <button
               className="rounded-md shadow-xs shadow-black
-            bg-primary text-foreground font-bold hover:text-primary
-            px-3 py-2.5 hover:bg-foreground text-sm cursor-pointer
+            bg-foreground text-white font-bold hover:text-black
+            px-3 py-2.5 hover:bg-gray-200 text-sm cursor-pointer
             focus:outline-none focus:ring-2 focus:ring-primary/50"
+              onClick={() => {
+                localStorage.removeItem('user');
+                localStorage.removeItem('token');
+                console.log('token is cleared.');
+                setUser(null);
+              }}
             >
-              <button
-                onClick={() => {
-                  localStorage.removeItem('user');
-                  setUser(null);
-                }}
-              >
-                Logout
-              </button>
-            </div>
+              Logout
+            </button>
           ) : (
-            <div
+            <button
               className="rounded-md shadow-xs shadow-black
-            bg-primary text-foreground font-bold hover:text-primary
-            px-3 py-2.5 hover:bg-foreground text-sm cursor-pointer
+            bg-foreground text-white font-bold hover:text-black
+            px-3 py-2.5 hover:bg-gray-200 text-sm cursor-pointer
             focus:outline-none focus:ring-2 focus:ring-primary/50"
+              onClick={() => navigate('login')}
             >
-              <button onClick={() => navigate('login')}>Login</button>
-            </div>
+              Login
+            </button>
           )}
 
           <ThemeToggle onOpenChange={setThemeMenuOpen} />

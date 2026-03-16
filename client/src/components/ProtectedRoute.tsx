@@ -4,7 +4,7 @@ import { useAuth } from '@/context/useAuth';
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuth();
 
-  if (!user) return <Navigate to="/login" />;
+  if (user?.role != 'admin') return <Navigate to="/login" />;
 
   return children;
 };

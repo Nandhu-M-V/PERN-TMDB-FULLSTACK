@@ -14,12 +14,13 @@ export default function ThemeToggle({ onOpenChange }: ThemeToggleProps) {
   const themes = ['light', 'red', 'green', 'sky', 'gray'] as const;
 
   const toggle = () => {
-    setOpen((prev) => {
-      const newState = !prev;
-      onOpenChange?.(newState);
-      return newState;
-    });
+    setOpen((prev) => !prev);
   };
+
+  // notify parent safely after render
+  useEffect(() => {
+    onOpenChange?.(open);
+  }, [open, onOpenChange]);
 
   // close on outside click
   useEffect(() => {
@@ -29,7 +30,6 @@ export default function ThemeToggle({ onOpenChange }: ThemeToggleProps) {
         !dropdownRef.current.contains(e.target as Node)
       ) {
         setOpen(false);
-        onOpenChange?.(false);
       }
     }
 
@@ -38,28 +38,27 @@ export default function ThemeToggle({ onOpenChange }: ThemeToggleProps) {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [onOpenChange]);
+  }, []);
 
   return (
     <div ref={dropdownRef} className="relative">
       <button
         onClick={toggle}
-        className="rounded-md shadow-xs shadow-black hover:bg-foreground hover:text-primary text-foreground font-bold bg-primary px-3 py-2.5"
+        className="rounded-md shadow-xs cursor-pointer shadow-black bg-foreground hover:text-black text-white font-bold hover:bg-gray-200 px-3 py-2.5"
       >
         <FaSun />
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-32 bg-background rounded-md border shadow-lg">
+        <div className="absolute right-0  mt-2 w-32 bg-gray-400 rounded-md border shadow-lg">
           {themes.map((t) => (
             <button
               key={t}
               onClick={() => {
                 changeTheme(t);
                 setOpen(false);
-                onOpenChange?.(false);
               }}
-              className={`block w-full px-3 py-2 text-left hover:bg-primary/50 ${
+              className={`block w-full cursor-pointer px-3 py-2 text-left hover:bg-primary/50 ${
                 theme === t ? 'font-bold text-foreground' : ''
               }`}
             >

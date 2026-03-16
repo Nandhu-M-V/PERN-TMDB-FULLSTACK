@@ -1,4 +1,6 @@
-const API = 'http://localhost:5000/auth';
+import { API_URL } from '@/environment_variables/env_constants';
+
+const API = `${API_URL}/auth`;
 
 const handleResponse = async (res: Response) => {
   let data;
@@ -31,7 +33,9 @@ export const login = async (email: string, password: string) => {
   const data = await handleResponse(res);
   localStorage.setItem('user', JSON.stringify(data.user));
 
-  //   console.log(' Login success:', data);
+  console.log(' Login success:', data);
+  console.log(`token is : ${data.access}`);
+  localStorage.setItem('token', data.access);
 
   return data;
 };
@@ -49,6 +53,8 @@ export const register = async (email: string, password: string) => {
   const data = await handleResponse(res);
 
   //   console.log(' Register success:', data);
+  console.log(`token is : ${data.access}`);
+  localStorage.setItem('token', data.access);
 
   return data;
 };

@@ -1,5 +1,7 @@
+import { API_URL } from '@/environment_variables/env_constants';
+
 export const apiFetch = async (url: string, options: RequestInit = {}) => {
-  return fetch(`http://localhost:5000${url}`, {
+  return fetch(`${API_URL}${url}`, {
     ...options,
     credentials: 'include',
     headers: {
@@ -10,7 +12,7 @@ export const apiFetch = async (url: string, options: RequestInit = {}) => {
 };
 
 export const logout = async () => {
-  await fetch('http://localhost:5000/api/auth/logout', {
+  await fetch(`${API_URL}/api/auth/logout`, {
     method: 'POST',
     credentials: 'include',
   });

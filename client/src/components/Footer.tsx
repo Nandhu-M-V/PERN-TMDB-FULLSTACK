@@ -10,14 +10,14 @@ const Footer = () => {
       <div className="max-w-6xl mx-auto px-6 py-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
           <div>
-            <h2 className="text-black dark:text-white text-lg font-semibold mb-3">
+            <h2 className="text-black text-3xl dark:text-white font-semibold mb-3">
               FlixNova
             </h2>
-            <p>{t('footerDescription')}</p>
+            <p className="text-black">{t('footerDescription')}</p>
           </div>
 
-          <div>
-            <h3 className="text-black dark:text-white font-medium mb-3">
+          <div className="text-black">
+            <h3 className="text-black dark:text-white text-lg font-medium mb-3">
               {t('quickLinks')}
             </h3>
             <ul className="space-y-2">
@@ -43,14 +43,14 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="text-black dark:text-white font-medium mb-3">
+            <h3 className="text-black text-lg font-medium mb-3">
               {t('about')}
             </h3>
-            <p>{t('tmdbDisclaimer')}</p>
+            <p className="text-black">{t('tmdbDisclaimer')}</p>
           </div>
         </div>
 
-        <div className="border-t border-zinc-700 mt-8 pt-6 text-center text-xs">
+        <div className="border-t border-foreground mt-8 pt-6 text-black text-center text-xs">
           © {new Date().getFullYear()} FlixNova. {t('rightsReserved')}
         </div>
       </div>

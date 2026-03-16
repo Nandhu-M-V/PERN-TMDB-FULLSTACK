@@ -17,6 +17,7 @@ export interface BaseMedia {
 import { useNavigate } from 'react-router-dom';
 
 import defaultPoster from '../assets/images/defaultposter.jpg';
+import { API_URL } from '@/environment_variables/env_constants';
 
 // const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
@@ -29,7 +30,7 @@ const TvShowCard = ({ movie }: { movie: BaseMedia }) => {
       ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
       : defaultPoster
     : movie?.poster_path
-      ? `http://localhost:5000${movie.poster_path}`
+      ? `${API_URL}${movie.poster_path}`
       : defaultPoster;
 
   const slugify = (displayTitle: string): string => {

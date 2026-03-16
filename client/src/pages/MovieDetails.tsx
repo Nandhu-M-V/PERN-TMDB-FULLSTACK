@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Loading from '@/components/Loading';
-import type { SimilarMovie } from '@/utils/ApiFetch';
+import type { SimilarMovie } from '@/utils/apiFetch';
 
 import defautImage from '../assets/images/ComingSoon.jpg';
 import defaultPoster from '../assets/images/defaultposter.jpg';
@@ -10,19 +10,20 @@ import {
   deleteMovie,
   fetchMovieid,
   fetchSimilarMovies,
-} from '@/utils/ApiFetch';
+} from '@/utils/apiFetch';
 
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/context/useAuth';
 
 import { useDispatch } from 'react-redux';
-import type { AppDispatch } from '@/app/store';
-import { fetchMovies } from '@/features/movies/movieSlice';
+import type { AppDispatch } from '@/Redux/store/store';
+import { fetchMovies } from '@/Redux/features/movies/movieSlice';
 
 import { toast } from 'react-toastify';
 
 import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/Confirm';
+import { API_URL } from '@/environment_variables/env_constants';
 
 interface Genre {
   id: number;
@@ -106,7 +107,7 @@ const MovieDetail = () => {
       ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
       : defaultPoster
     : movie?.poster_path
-      ? `http://localhost:5000${movie.poster_path}`
+      ? `${API_URL}${movie.poster_path}`
       : defaultPoster;
 
   if (loading) return <Loading />;
@@ -122,9 +123,13 @@ const MovieDetail = () => {
         className="relative h-[70vh] bg-cover bg-top"
         style={
           movie.backdrop_path
-            ? {
-                backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
-              }
+            ? movie.tmdb_id
+              ? {
+                  backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
+                }
+              : {
+                  backgroundImage: `url(http://localhost:5000${movie.backdrop_path})`,
+                }
             : { backgroundImage: `url(${defautImage})` }
         }
       >
@@ -240,7 +245,7 @@ const MovieDetail = () => {
                       ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
                       : defaultPoster
                     : movie.poster_path
-                      ? `http://localhost:5000${movie.poster_path}`
+                      ? `${API_URL}${movie.poster_path}`
                       : defaultPoster
                 }
                 alt={movie.title}

@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import type { TvDetailType } from './TvDetail';
-import type { AppDispatch } from '../app/store';
+import type { AppDispatch } from '../Redux/store/store';
 import { useDispatch } from 'react-redux';
-import { fetchTvShows } from '@/features/Tvshows/tvshowSlice';
+import { fetchTvShows } from '@/Redux/features/Tvshows/tvshowSlice';
 import { useAuth } from '@/context/useAuth';
 import { toast } from 'react-toastify';
 import { ConfirmDialog } from '@/components/Confirm';
 import { Button } from '@/components/ui/button';
+import { API_URL } from '@/environment_variables/env_constants';
 
 const EditTvShow = () => {
   const { id } = useParams<{ id: string }>();
@@ -46,7 +47,7 @@ const EditTvShow = () => {
 
     const fetchShow = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/tvshow/${showId}`);
+        const res = await fetch(`${API_URL}/api/tvshow/${showId}`);
         if (!res.ok) throw new Error('TV show not found');
 
         const data: TvDetailType = await res.json();
@@ -97,14 +98,11 @@ const EditTvShow = () => {
     };
 
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/tvshow/${showId}`,
-        {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(updatedShow),
-        }
-      );
+      const response = await fetch(`${API_URL}/api/tvshow/${showId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedShow),
+      });
 
       if (!response.ok) {
         toast.error('Failed to update Tvshow ');
@@ -113,6 +111,8 @@ const EditTvShow = () => {
       }
 
       const data = await response.json();
+      toast.success('Tvshow Edited successfully');
+
       dispatch(fetchTvShows(1));
       navigate(`/tv/${showId}/${slugify(data.title)}`);
     } catch (err) {
@@ -241,7 +241,6 @@ const EditTvShow = () => {
 
                   try {
                     handleSubmit();
-                    toast.success('Tvshow Edited successfully');
                   } catch (error) {
                     toast.error(`Failed to delete movie ${error}`);
                   }

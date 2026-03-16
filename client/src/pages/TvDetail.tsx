@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Loading from '@/components/Loading';
-import { deleteTvshow, fetchShowid } from '@/utils/ApiFetch';
+import { deleteTvshow, fetchShowid } from '@/utils/apiFetch';
 // import { useAuth0 } from '@auth0/auth0-react';
 // import defautImage from '../assets/images/ComingSoon.jpg';
 
@@ -9,8 +9,8 @@ import { Button } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/Confirm';
 
 import { useDispatch } from 'react-redux';
-import { fetchTvShows } from '@/features/Tvshows/tvshowSlice';
-import type { AppDispatch } from '@/app/store';
+import { fetchTvShows } from '@/Redux/features/Tvshows/tvshowSlice';
+import type { AppDispatch } from '@/Redux/store/store';
 
 import defaultPoster from '../assets/images/defaultposter.jpg';
 
@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { useAuth } from '@/context/useAuth';
 import { toast } from 'react-toastify';
+import { API_URL } from '@/environment_variables/env_constants';
 
 export interface Genre {
   id: number;
@@ -88,7 +89,7 @@ const TvDetail = () => {
   useEffect(() => {
     const getRelated = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/tvshows`);
+        const res = await axios.get(`${API_URL}/api/tvshows`);
         setSimilar(res.data.results);
       } catch (error) {
         console.error(error);
@@ -129,7 +130,7 @@ const TvDetail = () => {
       ? `https://image.tmdb.org/t/p/w500${show.poster_path}`
       : defaultPoster
     : show?.poster_path
-      ? `http://localhost:5000${show.poster_path}`
+      ? `${API_URL}${show.poster_path}`
       : defaultPoster;
 
   if (loading) return <Loading />;
@@ -287,7 +288,7 @@ const TvDetail = () => {
                       ? `https://image.tmdb.org/t/p/w500${season.poster_path}`
                       : defaultPoster
                     : season.poster_path
-                      ? `http://localhost:5000${season.poster_path}`
+                      ? `${API_URL}${season.poster_path}`
                       : defaultPoster
                 }
                 alt={season.title}

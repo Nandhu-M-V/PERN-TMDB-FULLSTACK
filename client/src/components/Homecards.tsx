@@ -17,6 +17,7 @@ export interface Movie {
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
 import defaultPoster from '../assets/images/defaultposter.jpg';
+import { API_URL } from '@/environment_variables/env_constants';
 
 const HomeCards = ({
   movie,
@@ -33,7 +34,7 @@ const HomeCards = ({
       ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
       : defaultPoster
     : movie?.poster_path
-      ? `http://localhost:5000${movie.poster_path}`
+      ? `${API_URL}${movie.poster_path}`
       : defaultPoster;
 
   const slugify = (displayTitle: string): string => {

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { getDiscoverMovies } from '../../utils/ApiFetch';
+import { getDiscoverMovies } from '../../../utils/apiFetch';
 
 interface Movie {
   id: number;

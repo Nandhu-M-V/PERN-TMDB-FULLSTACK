@@ -35,10 +35,31 @@ const App = () => {
           <Route path="movies/discover" element={<Movies />} />
           <Route path="tvshow/discover" element={<TvShows />} />
 
-          <Route path="movies/edit/:id" element={<EditMovie />} />
-          <Route path="tvshow/edit/:id" element={<EditTvShow />} />
+          <Route
+            path="movies/edit/:id"
+            element={
+              <ProtectedRoute>
+                <EditMovie />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="tvshow/edit/:id"
+            element={
+              <ProtectedRoute>
+                <EditTvShow />
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="media/add" element={<AddMedia />} />
+          <Route
+            path="media/add"
+            element={
+              <ProtectedRoute>
+                <AddMedia />
+              </ProtectedRoute>
+            }
+          />
 
           <Route path="movie/:id/:title" element={<MovieDetail />} />
           <Route path="tv/:id/:name" element={<TvDetail />} />

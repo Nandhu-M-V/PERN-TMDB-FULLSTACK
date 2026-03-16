@@ -1,6 +1,7 @@
 import type { BaseMedia } from './TvShowCard';
 import { useNavigate } from 'react-router-dom';
 import defaultImage from '../assets/images/ComingSoon.jpg';
+import { API_URL } from '@/environment_variables/env_constants';
 // import { useEffect } from 'react';
 
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
@@ -43,7 +44,7 @@ const MovieCard = ({ movie }: { movie: BaseMedia }) => {
             ? movie.poster_path
               ? `${IMAGE_BASE_URL}${movie.poster_path}`
               : defaultImage
-            : `http://localhost:5000${movie.poster_path}`
+            : `${API_URL}${movie.poster_path}`
         }
         alt={displayTitle}
       />

@@ -8,9 +8,10 @@ import { useAuth } from '@/context/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
-import { fetchMovies } from '@/features/movies/movieSlice';
-import { fetchTvShows } from '@/features/Tvshows/tvshowSlice';
-import type { AppDispatch } from '@/app/store';
+import { fetchMovies } from '@/Redux/features/movies/movieSlice';
+import { fetchTvShows } from '@/Redux/features/Tvshows/tvshowSlice';
+import type { AppDispatch } from '@/Redux/store/store';
+import { API_URL } from '@/environment_variables/env_constants';
 
 const AddMedia = () => {
   const {
@@ -77,13 +78,9 @@ const AddMedia = () => {
       formData.append('runtime', String(data.runtime));
       formData.append('poster', file);
 
-      await axios.post(
-        `http://localhost:5000/api/media/${data.type}`,
-        formData,
-        {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        }
-      );
+      await axios.post(`${API_URL}/api/media/${data.type}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
 
       toast.success('Media added successfully 🎬');
 

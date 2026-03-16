@@ -9,6 +9,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
+import { API_URL } from '@/environment_variables/env_constants';
 
 interface Media {
   id: number;
@@ -38,7 +39,7 @@ export default function Carousal({ movies }: CarousalProps) {
                   movie.backdrop_path
                     ? !movie.backdrop_path.includes('uploads')
                       ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
-                      : `http://localhost:5000${movie.backdrop_path}`
+                      : `${API_URL}${movie.backdrop_path}`
                     : defimg
                 }
                 className="w-full h-full object-cover"

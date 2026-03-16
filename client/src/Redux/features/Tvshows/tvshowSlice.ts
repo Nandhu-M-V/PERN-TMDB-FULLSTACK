@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { getDiscoverTvShows } from '../../utils/ApiFetch';
+import { getDiscoverTvShows } from '../../../utils/apiFetch';
 
 export interface TvShow {
   id: number;

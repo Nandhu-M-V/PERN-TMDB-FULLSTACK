@@ -8,15 +8,23 @@ export const authenticate = (
 ) => {
   const header = req.headers.authorization;
 
-  if (!header) return res.status(401).json({ error: "Unauthorized" });
+  if (!header) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  const token = header.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ error: "Token missing" });
+  }
 
   try {
-    const token = header.split(" ")[1];
+    const payload = verifyAccess(token);
 
-    req.user = verifyAccess(token);
+    req.user = payload;
 
     next();
   } catch {
-    res.status(401).json({ error: "Invalid token" });
+    return res.status(401).json({ error: "Invalid token" });
   }
 };

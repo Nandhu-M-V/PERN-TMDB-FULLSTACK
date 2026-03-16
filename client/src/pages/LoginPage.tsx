@@ -24,6 +24,7 @@ const LoginPage = () => {
         : await register(email, password);
 
       setUser(data.user);
+
       navigate('/');
     } catch (err) {
       console.error(err);
@@ -94,7 +95,7 @@ const LoginPage = () => {
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full bg-red-600 hover:bg-primary text-white font-semibold py-2 rounded-lg transition disabled:opacity-50"
+          className="w-full hover:bg-foreground border border-foreground bg-primary text-black hover:text-white text-shadow-2xs text-shadow-foreground font-semibold py-2 rounded-lg transition disabled:opacity-50"
         >
           {loading ? 'Please wait...' : isLogin ? 'Login' : 'Register'}
         </button>

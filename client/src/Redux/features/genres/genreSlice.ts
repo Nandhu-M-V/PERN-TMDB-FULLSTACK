@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchMovieGenres } from '@/utils/ApiFetch';
+import { fetchMovieGenres } from '@/utils/apiFetch';
 
 interface Genre {
   id: number;

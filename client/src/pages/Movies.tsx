@@ -1,5 +1,5 @@
-import { fetchMovies } from '../features/movies/movieSlice';
-import type { AppDispatch, RootState } from '../app/store';
+import { fetchMovies } from '../Redux/features/movies/movieSlice';
+import type { AppDispatch, RootState } from '../Redux/store/store';
 import MovieCard from '../components/MovieCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
@@ -8,6 +8,7 @@ import Carousal from '@/components/Carousal';
 import '../utils/i18n';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
+import { API_URL } from '@/environment_variables/env_constants';
 
 const Movies = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -19,7 +20,7 @@ const Movies = () => {
   const limit = 30;
 
   useEffect(() => {
-    axios.get('http://localhost:5000/movies/count').then((res) => {
+    axios.get(`${API_URL}/movies/count`).then((res) => {
       const totalRows = res.data.total;
       setTotalPages(Math.ceil(totalRows / limit));
     });

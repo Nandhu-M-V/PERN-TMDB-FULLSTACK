@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import type { AppDispatch } from '../app/store';
+import type { AppDispatch } from '../Redux/store/store';
 import type { MovieDetailType } from './MovieDetails';
-import { fetchMovies } from '@/features/movies/movieSlice';
+import { fetchMovies } from '@/Redux/features/movies/movieSlice';
 import { useDispatch } from 'react-redux';
 import { useAuth } from '@/context/useAuth';
 import { toast } from 'react-toastify';
 import { ConfirmDialog } from '@/components/Confirm';
 import { Button } from '@/components/ui/button';
+import { API_URL } from '@/environment_variables/env_constants';
 
 const EditMovie = () => {
   const { id } = useParams<{ id: string }>();
@@ -33,7 +34,7 @@ const EditMovie = () => {
 
     const fetchMovie = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/movie/${movieId}`);
+        const res = await fetch(`${API_URL}/api/movie/${movieId}`);
         if (!res.ok) throw new Error('Movie not found');
 
         const data: MovieDetailType = await res.json();
@@ -98,14 +99,11 @@ const EditMovie = () => {
     };
 
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/movie/${movieId}`,
-        {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(updatedMovie),
-        }
-      );
+      const response = await fetch(`${API_URL}/api/movie/${movieId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedMovie),
+      });
 
       if (!response.ok) {
         const errData = await response.json().catch(() => ({}));
@@ -114,6 +112,8 @@ const EditMovie = () => {
       }
 
       const data = await response.json().catch(() => updatedMovie);
+      toast.success('Movie Edited successfully');
+
       dispatch(fetchMovies(1));
 
       navigate(`/movie/${movieId}/${slugify(data.title)}`);
@@ -224,7 +224,6 @@ const EditMovie = () => {
 
                 try {
                   handleSubmit();
-                  toast.success('Movie Edited successfully');
                 } catch (error) {
                   toast.error(`Failed to delete movie ${error}`);
                 }

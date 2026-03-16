@@ -3,34 +3,38 @@ import i18n from './i18n';
 
 import type { TvDetailType } from '@/pages/TvDetail';
 import type { MovieDetailType } from '@/pages/MovieDetails';
+import { API_URL } from '@/environment_variables/env_constants';
 
-const token = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
+// const token = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
 
-if (!token) {
-  throw new Error('TMDB Access Token is missing in .env file');
-}
+// if (!token) {
+//   throw new Error('TMDB Access Token is missing in .env file');
+// }
 
-export const tmdbApi = axios.create({
-  baseURL: 'https://api.themoviedb.org/3',
+export const API = axios.create({
+  baseURL: `${API_URL}`,
   headers: {
     accept: 'application/json',
-    Authorization: `Bearer ${token}`,
   },
 });
 
+API.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+
 export interface DiscoverMovieFilters {
-  language?: string;
-  sort_by?: string;
   page?: number;
-  include_adult?: boolean;
-
-  with_genres?: string;
-  primary_release_year?: number;
-
-  'vote_average.gte'?: number;
-  'vote_count.gte'?: number;
-  'with_runtime.gte'?: number;
-  'with_runtime.lte'?: number;
+  limit?: number;
+  type: 'movie' | 'tv' | 'all';
+  year?: number | string;
+  minRating?: number;
+  sortBy?: string;
 }
 
 export interface DiscoverMovieResponse {
@@ -48,6 +52,7 @@ export interface Genre {
 export interface DiscoverMovie {
   id: number;
   title: string;
+  media_type?: string;
   poster_path: string | null;
   vote_average: number;
   vote_count: number;
@@ -81,14 +86,14 @@ export interface SimilarMovie {
 }
 
 export const fetchMovieGenres = async (): Promise<Genre[]> => {
-  const res = await tmdbApi.get('/genre/movie/list');
+  const res = await API.get('/genre/movie/list');
   return res.data.genres;
 };
 
 // get all movies
 
 export const getDiscoverMovies = async (page: number): Promise<Movie[]> => {
-  const res = await axios.get('http://localhost:5000/api/movies', {
+  const res = await API.get('/api/movies', {
     params: {
       include_video: false,
       language: i18n.language,
@@ -103,13 +108,8 @@ export const getDiscoverMovies = async (page: number): Promise<Movie[]> => {
 export const getFilterMovies = async (
   params: DiscoverMovieFilters
 ): Promise<DiscoverMovieResponse> => {
-  const res = await tmdbApi.get('/discover/movie', {
-    params: {
-      language: i18n.language,
-      include_adult: false,
-      sort_by: 'popularity.desc',
-      ...params,
-    },
+  const res = await API.get('/api/filter', {
+    params,
   });
 
   return res.data;
@@ -118,7 +118,7 @@ export const getFilterMovies = async (
 // get all tvshows
 
 export const getDiscoverTvShows = async (page: number): Promise<TvShow[]> => {
-  const res = await tmdbApi.get('http://localhost:5000/api/tvshows', {
+  const res = await API.get('/api/tvshows', {
     params: {
       include_video: false,
       language: i18n.language,
@@ -133,7 +133,7 @@ export const getDiscoverTvShows = async (page: number): Promise<TvShow[]> => {
 // get tvshow
 
 export const fetchShowid = async (id: string): Promise<TvDetailType> => {
-  const res = await axios.get(`http://localhost:5000/api/tvshow/${id}`, {
+  const res = await API.get(`/api/tvshow/${id}`, {
     // params: { language: i18n.language },
   });
 
@@ -143,7 +143,7 @@ export const fetchShowid = async (id: string): Promise<TvDetailType> => {
 // get movie
 
 export const fetchMovieid = async (id: string): Promise<MovieDetailType> => {
-  const res = await axios.get(`http://localhost:5000/api/movie/${id}`, {
+  const res = await API.get(`/api/movie/${id}`, {
     // params: { language: i18n.language },
   });
 
@@ -153,7 +153,7 @@ export const fetchMovieid = async (id: string): Promise<MovieDetailType> => {
 // similar movies for detail page
 
 export const fetchSimilarMovies = async (): Promise<SimilarMovie[]> => {
-  const res = await axios.get('http://localhost:5000/api/movies', {
+  const res = await API.get('/api/movies', {
     params: {
       include_video: false,
       sort_by: 'popularity.desc',
@@ -166,10 +166,10 @@ export const fetchSimilarMovies = async (): Promise<SimilarMovie[]> => {
 // delete Movies
 
 export const deleteMovie = async (id: number) => {
-  await axios.delete(`http://localhost:5000/api/media/movie/${id}`);
+  await API.delete(`/api/media/movie/${id}`);
 };
 
 // delete Tvshows
 export const deleteTvshow = async (id: number) => {
-  await axios.delete(`http://localhost:5000/api/media/tv/${id}`);
+  await API.delete(`/api/media/tv/${id}`);
 };

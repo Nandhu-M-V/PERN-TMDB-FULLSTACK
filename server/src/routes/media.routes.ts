@@ -7,9 +7,11 @@ import { updateMovie } from "../controllers/updateMovie.controller.js";
 import { updateTvShow } from "../controllers/updateTvShows.controller.js";
 import { upload } from "../middleware/upload.js";
 import { createMedia } from "../controllers/createMedia.controller.js";
-import { newMediaSchema } from "../validators/newMedia.schema.js";
 import { deleteMedia } from "../controllers/deleteMedia.controller.js";
 import { searchMedia } from "../controllers/search.controller.js";
+import { filterMedia } from "../controllers/filter.controller.js";
+import { authenticate } from "../middleware/auth.js";
+import { requireAdmin } from "../middleware/reqAdmin.js";
 
 const router = Router();
 
@@ -30,15 +32,17 @@ router.get("/movie/:id", getMediaById);
 router.get("/tvshow/:id", getMediaById);
 
 // Delete media
-router.delete("/media/:type/:id", deleteMedia);
+router.delete("/media/:type/:id", authenticate, requireAdmin, deleteMedia);
 
 // Update movie
-router.put("/movie/:id", updateMovie);
+router.put("/movie/:id", authenticate, requireAdmin, updateMovie);
 
 // Update TV Show
-router.put("/tvshow/:id", updateTvShow);
+router.put("/tvshow/:id", authenticate, requireAdmin, updateTvShow);
 
 //Search media
 router.get("/search", searchMedia);
 
+// Filter media
+router.get("/filter", authenticate, requireAdmin, filterMedia);
 export default router;

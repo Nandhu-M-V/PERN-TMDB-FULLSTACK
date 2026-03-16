@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import type { AppDispatch, RootState } from '@/app/store';
-import { fetchGenres } from '@/features/genres/genreSlice';
+import type { AppDispatch, RootState } from '@/Redux/store/store';
+import { fetchGenres } from '@/Redux/features/genres/genreSlice';
 import { useEffect } from 'react';
 
 interface Props {

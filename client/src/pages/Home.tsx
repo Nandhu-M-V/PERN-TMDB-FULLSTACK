@@ -1,6 +1,6 @@
-import { fetchMovies } from '../features/movies/movieSlice';
-import { fetchTvShows } from '@/features/Tvshows/tvshowSlice';
-import type { AppDispatch, RootState } from '../app/store';
+import { fetchMovies } from '../Redux/features/movies/movieSlice';
+import { fetchTvShows } from '@/Redux/features/Tvshows/tvshowSlice';
+import type { AppDispatch, RootState } from '../Redux/store/store';
 import HomeBanner from '@/components/HomeBanner';
 import Loading from '@/components/Loading';
 import { useAuth } from '@/context/useAuth';
@@ -57,7 +57,7 @@ const Home = () => {
     <>
       <div className=" min-h-screen pl-10  text-white">
         <div className="dark:hidden bg-red-300/30 w-full left-0 -z-9 top-210 absolute h-full" />
-        <h1 className="absolute z-20 top-30 lg:left-30 font-bold text-2xl md:text-4xl lg:text-6xl text-red-200">
+        <h1 className="absolute z-20 top-30 lg:left-30 font-bold text-2xl md:text-4xl lg:text-6xl text-primary/90">
           <label className="t-shadow">{t('welcomeUser')}</label>
           <div className="t-shadow">
             {roles && roles.includes('admin')

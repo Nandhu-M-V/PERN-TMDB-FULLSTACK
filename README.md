@@ -1,2 +1,2 @@
 # PERN-TMDB-FULLSTACK
-Postgres, Express, React, Node, Auth0, Tailwind CSS, TypeScript, ZOD,  Shadcn , TMDB API, Fullstack movie viewer app
+Postgres, Express, React, Node, JWT auth, Tailwind CSS, TypeScript, ZOD,  Shadcn , TMDB API, Fullstack movie viewer app
